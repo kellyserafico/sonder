@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
 from typing import List
 from .. import models
-from .. import schema as schemas  # This aliases schema as schemas
+from .. import schema as schemas 
 from ..database import get_db
 import hashlib, os
 
@@ -28,17 +28,15 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     salt = os.urandom(32) 
     password_bytes = user.password.encode()
     
-    # Use PBKDF2 with SHA-256 (more secure than plain SHA-256)
     hashed_password = hashlib.pbkdf2_hmac(
         'sha256',
         password_bytes,
         salt,
-        100000  # Number of iterations (higher is more secure but slower)
+        100
     )
 
     stored_password = salt.hex() + ':' + hashed_password.hex()
     
-    # Create new user with hashed password
     db_user = models.User(
         username=user.username,
         email=user.email,
@@ -48,6 +46,7 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     db.add(db_user)
     db.commit()
     db.refresh(db_user)
+
     return db_user
 
 # Read all users
@@ -97,8 +96,37 @@ def update_user(user_id: int, user: schemas.UserBase, db: Session = Depends(get_
     db.refresh(db_user)
     return db_user
 
+# Update user password
+@router.put("/forgot/{user_id}", response_model=schemas.UserResponse)
+def reset_password(user_id: int, password_data: schemas.PasswordReset, db: Session = Depends(get_db)):
+    db_user = db.query(models.User).filter(models.User.id == user_id).first()
+    if db_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    
+    salt = os.urandom(32) 
+    password_bytes = password_data.new_password.encode()
+    
+    hashed_password = hashlib.pbkdf2_hmac(
+        'sha256',
+        password_bytes,
+        salt,
+        100
+    )
+
+    stored_password = salt.hex() + ':' + hashed_password.hex()
+    
+    # Update password
+    db_user.password = stored_password
+    
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 # Delete user
-@router.delete("/{user_id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{user_id}")
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user is None:
@@ -109,4 +137,4 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     
     db.delete(db_user)
     db.commit()
-    return None
+    return {"message":"Deleted User"}

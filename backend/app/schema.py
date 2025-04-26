@@ -7,6 +7,9 @@ class UserBase(BaseModel):
     username: str
     email: EmailStr
 
+class PasswordReset(BaseModel):
+    new_password: str
+    
 class UserCreate(UserBase):
     password: str
 
