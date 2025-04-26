@@ -10,7 +10,7 @@ class User(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(50), unique=True, index=True)
     email = Column(String(100), unique=True, index=True)
-    password = Column(String(128))
+    password = Column(String(256))
     
     responses = relationship("Response", back_populates="user")
     comments = relationship("Comment", back_populates="user")
@@ -31,10 +31,12 @@ class Response(Base):
     __tablename__ = "responses"
 
     id = Column(Integer, primary_key=True, index=True)
-    content = Column(Text, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
-    
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
+    content = Column(Text, nullable=False) 
+    image = Column(String, nullable=True)
+    anonymous = Column(Boolean, default=False)
+    date =  Column(DateTime(timezone=True), server_default=func.now())
+    likes = Column(Integer, default=0)
     prompt_id = Column(Integer, ForeignKey("prompts.id"), nullable=False)
     
     user = relationship("User", back_populates="responses")
