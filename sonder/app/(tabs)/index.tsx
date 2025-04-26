@@ -1,7 +1,6 @@
-import { Image, StyleSheet, Platform, Button } from 'react-native';
+import { StyleSheet, Button, View } from 'react-native';
 
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
+
 import { ThemedText } from '@/components/ThemedText';
 import { ThemedView } from '@/components/ThemedView';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
@@ -15,8 +14,13 @@ export default function HomeScreen() {
       <ThemedView style={styles.titleContainer}>
         <ThemedText type="title" style={{ fontFamily: "JosefinSans", fontWeight: "bold" }}>sonder</ThemedText>
       </ThemedView>
-<Button title="login"></Button>
+<View style={styles.button}>
+  <Button title="login" onPress={() => {}} />
+</View>
+<View style={styles.button}>
 <Button title="sign up"></Button>
+</View>
+
 
       </SafeAreaView>
       </SafeAreaProvider>
@@ -32,6 +36,12 @@ const styles = StyleSheet.create({
   stepContainer: {
     gap: 8,
     marginBottom: 8,
+  },
+  button: {
+    width: 290,
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   reactLogo: {
     height: 178,
