@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime
+from sqlalchemy import Column, Integer, String, Text, ForeignKey, DateTime, Boolean, Date, ARRAY
 from sqlalchemy.orm import relationship
 from sqlalchemy.sql import func
 
@@ -15,15 +15,29 @@ class User(Base):
     # Relationship - one user has many responses
     responses = relationship("Response", back_populates="user")
 
+
 class Response(Base):
     __tablename__ = "responses"
 
     id = Column(Integer, primary_key=True, index=True)
     content = Column(Text, nullable=False)
-    created_at = Column(DateTime(timezone=True), server_default=func.now())
+
     
     # Foreign key to link to users table
     user_id = Column(Integer, ForeignKey("users.id"), nullable=False)
     
-    # Relationship - response belongs to one user
-    user = relationship("User", back_populates="responses")
+    response_text = Column(Text, nullable=False)
+    image = Column(Text)
+    anonymous = Column(Boolean, default=False)
+    date = Column(Date, default=func.current_date())
+    likes = Column(Integer, default=0)
+
+class Comment(Base):
+    __tablename__ = "comments"
+    
+    id = Column(Integer, primary_key=True, index=True)
+    response_id = Column(Integer, ForeignKey("responses.id"))
+    comment_text = Column(Text, nullable=False)
+    date = Column(Date, default=func.current_date())
+    
+

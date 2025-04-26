@@ -3,7 +3,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
 
 # Replace with your actual PostgreSQL connection string
-SQLALCHEMY_DATABASE_URL = "postgresql://postgres:postgres@localhost/sonder"
+SQLALCHEMY_DATABASE_URL = "postgresql://postgres:Pw1005324!@localhost/sonder"
 
 engine = create_engine(SQLALCHEMY_DATABASE_URL)
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
