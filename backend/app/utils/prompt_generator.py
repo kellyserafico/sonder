@@ -14,20 +14,32 @@ def generate_prompt():
         "Content-Type": "application/json"
     }
     
+    import random
+    prompt_types = [
+        "Generate a reflective question about personal growth that's 10-15 words.",
+        "Create a brief question about relationships or connections between people.",
+        "Devise a short question about life choices or decisions people make.",
+        "Formulate a concise question about values or principles people hold.",
+        "Craft a brief question about memories or nostalgia.",
+        "Create a short question about hopes or aspirations."
+    ]
+    
+    selected_prompt = random.choice(prompt_types)
+    
     data = {
         "contents": [{
             "parts": [{
-                "text": "Generate a brief, thought-provoking question for a social app that users will answer. The question should be concise (under 10 words if possible) while still encouraging personal reflection. Keep it engaging but short."
+                "text": f"{selected_prompt} Make it thought-provoking and unique. Provide ONLY a single question."
             }]
         }],
         "generationConfig": {
-            "temperature": 0.7,
-            "topK": 40,
-            "topP": 0.95,
-            "maxOutputTokens": 50,  # Reduced from 100 to 50
+            "temperature": 1.0,
+            "topK": 90,
+            "topP": 0.99,
+            "maxOutputTokens": 60,
         }
     }
-    
+
     try:
         response = requests.post(
             GEMINI_API_URL,
