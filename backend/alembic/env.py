@@ -7,8 +7,11 @@ from alembic import context
 
 import os
 import sys
+from dotenv import load_dotenv
 from app.models import Base
 from app.database import SQLALCHEMY_DATABASE_URL
+
+load_dotenv()
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
