@@ -31,7 +31,7 @@ export default function SignUp() {
           </View>
 
           {/* Link to login */}
-          <TouchableOpacity onPress={() => router.push('/login')}>
+          <TouchableOpacity onPress={() => router.push('./login')}>
             <Text style={styles.link}>already registered?</Text>
           </TouchableOpacity>
 
