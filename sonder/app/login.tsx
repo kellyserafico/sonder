@@ -39,7 +39,7 @@ export default function LoginScreen() {
           </TouchableOpacity>
 
           {/* Log In Button */}
-          <TouchableOpacity style={styles.button} onPress={() => router.push('./(tabs)/explore')}>
+          <TouchableOpacity style={styles.button} onPress={() => router.push('./(tabs)/home')}>
             <Text style={styles.buttonText}>log in</Text>
           </TouchableOpacity>
         </SafeAreaView>
