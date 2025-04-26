@@ -1,109 +1,167 @@
-import { StyleSheet, Image, Platform } from 'react-native';
+import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Feather } from '@expo/vector-icons';
+import { useState } from 'react';
 
-import { Collapsible } from '@/components/Collapsible';
-import { ExternalLink } from '@/components/ExternalLink';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
-import { IconSymbol } from '@/components/ui/IconSymbol';
+const posts = [
+  { id: '1', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
+  { id: '2', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
+  { id: '3', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
+  { id: '4', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
+];
 
-export default function TabTwoScreen() {
+export default function FeedScreen() {
+  const [selectedTab, setSelectedTab] = useState('trending');
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#D0D0D0', dark: '#353636' }}
-      headerImage={
-        <IconSymbol
-          size={310}
-          color="#808080"
-          name="chevron.left.forwardslash.chevron.right"
-          style={styles.headerImage}
+    <SafeAreaProvider>
+      <SafeAreaView style={styles.container}>
+        {/* Header */}
+        <View style={styles.header}>
+          <Text style={styles.title}>sonder</Text>
+          <Image
+            source={{ uri: 'https://via.placeholder.com/80' }}
+            style={styles.profilePic}
+          />
+        </View>
+
+        {/* Prompt */}
+        <TouchableOpacity>
+          <Text style={styles.prompt}>how are you?</Text>
+        </TouchableOpacity>
+
+        {/* Tabs */}
+        <View style={styles.tabs}>
+          <TouchableOpacity onPress={() => setSelectedTab('trending')}>
+            <Text style={[styles.tabText, selectedTab === 'trending' && styles.activeTab]}>
+              trending
+            </Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity onPress={() => setSelectedTab('following')}>
+            <Text style={[styles.tabText, selectedTab === 'following' && styles.activeTab]}>
+              following
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Post List */}
+        <FlatList
+          data={posts}
+          keyExtractor={(item) => item.id}
+          renderItem={({ item }) => <Post username={item.username} text={item.text} />}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 8 }}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Explore</ThemedText>
-      </ThemedView>
-      <ThemedText>This app includes example code to help you get started.</ThemedText>
-      <Collapsible title="File-based routing">
-        <ThemedText>
-          This app has two screens:{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">app/(tabs)/explore.tsx</ThemedText>
-        </ThemedText>
-        <ThemedText>
-          The layout file in <ThemedText type="defaultSemiBold">app/(tabs)/_layout.tsx</ThemedText>{' '}
-          sets up the tab navigator.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/router/introduction">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Android, iOS, and web support">
-        <ThemedText>
-          You can open this project on Android, iOS, and the web. To open the web version, press{' '}
-          <ThemedText type="defaultSemiBold">w</ThemedText> in the terminal running this project.
-        </ThemedText>
-      </Collapsible>
-      <Collapsible title="Images">
-        <ThemedText>
-          For static images, you can use the <ThemedText type="defaultSemiBold">@2x</ThemedText> and{' '}
-          <ThemedText type="defaultSemiBold">@3x</ThemedText> suffixes to provide files for
-          different screen densities
-        </ThemedText>
-        <Image source={require('@/assets/images/react-logo.png')} style={{ alignSelf: 'center' }} />
-        <ExternalLink href="https://reactnative.dev/docs/images">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Custom fonts">
-        <ThemedText>
-          Open <ThemedText type="defaultSemiBold">app/_layout.tsx</ThemedText> to see how to load{' '}
-          <ThemedText style={{ fontFamily: 'SpaceMono' }}>
-            custom fonts such as this one.
-          </ThemedText>
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/versions/latest/sdk/font">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Light and dark mode components">
-        <ThemedText>
-          This template has light and dark mode support. The{' '}
-          <ThemedText type="defaultSemiBold">useColorScheme()</ThemedText> hook lets you inspect
-          what the user's current color scheme is, and so you can adjust UI colors accordingly.
-        </ThemedText>
-        <ExternalLink href="https://docs.expo.dev/develop/user-interface/color-themes/">
-          <ThemedText type="link">Learn more</ThemedText>
-        </ExternalLink>
-      </Collapsible>
-      <Collapsible title="Animations">
-        <ThemedText>
-          This template includes an example of an animated component. The{' '}
-          <ThemedText type="defaultSemiBold">components/HelloWave.tsx</ThemedText> component uses
-          the powerful <ThemedText type="defaultSemiBold">react-native-reanimated</ThemedText>{' '}
-          library to create a waving hand animation.
-        </ThemedText>
-        {Platform.select({
-          ios: (
-            <ThemedText>
-              The <ThemedText type="defaultSemiBold">components/ParallaxScrollView.tsx</ThemedText>{' '}
-              component provides a parallax effect for the header image.
-            </ThemedText>
-          ),
-        })}
-      </Collapsible>
-    </ParallaxScrollView>
+      </SafeAreaView>
+    </SafeAreaProvider>
+  );
+}
+
+function Post({ username, text }: { username: string; text: string }) {
+  return (
+    <View style={styles.postContainer}>
+      <Image
+        source={{ uri: 'https://via.placeholder.com/80' }}
+        style={styles.postProfilePic}
+      />
+      <View style={styles.postContent}>
+        <Text style={styles.username}>@{username}</Text>
+        <Text style={styles.postText}>{text}</Text>
+        <View style={styles.actions}>
+          <TouchableOpacity style={styles.iconButton}>
+            <Feather name="heart" size={20} color="#ffffff" />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.iconButton}>
+            <Feather name="message-circle" size={20} color="#ffffff" />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </View>
   );
 }
 
 const styles = StyleSheet.create({
-  headerImage: {
-    color: '#808080',
-    bottom: -90,
-    left: -35,
-    position: 'absolute',
+  container: {
+    flex: 1,
+    backgroundColor: '#000000',
   },
-  titleContainer: {
+  header: {
     flexDirection: 'row',
-    gap: 8,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingHorizontal: 16,
+    marginTop: 8,
+  },
+  title: {
+    fontFamily: 'JosefinSans-Bold',
+    fontSize: 32,
+    color: '#ffffff',
+    fontWeight: '700',
+  },
+  profilePic: {
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    backgroundColor: '#ccc',
+  },
+  prompt: {
+    textAlign: 'center',
+    color: '#ffffff',
+    fontSize: 18,
+    fontFamily: 'JosefinSans-Regular',
+    marginTop: 16,
+    marginBottom: 16,
+    textDecorationLine: 'underline',
+  },
+  tabs: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    borderBottomColor: '#ffffff',
+    borderBottomWidth: 1,
+    paddingBottom: 8,
+  },
+  tabText: {
+    color: '#ffffff',
+    fontSize: 18,
+    fontFamily: 'JosefinSans-Regular',
+  },
+  activeTab: {
+    borderBottomWidth: 2,
+    borderBottomColor: '#C084FC', // purple underline
+  },
+  postContainer: {
+    flexDirection: 'row',
+    marginVertical: 12,
+    alignItems: 'flex-start',
+  },
+  postProfilePic: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    backgroundColor: '#ccc',
+    marginRight: 12,
+  },
+  postContent: {
+    flex: 1,
+  },
+  username: {
+    fontFamily: 'JosefinSans-Bold',
+    fontSize: 16,
+    color: '#ffffff',
+    marginBottom: 4,
+  },
+  postText: {
+    fontFamily: 'JosefinSans-Regular',
+    fontSize: 14,
+    color: '#ffffff',
+    marginBottom: 8,
+  },
+  actions: {
+    flexDirection: 'row',
+    gap: 12,
+  },
+  iconButton: {
+    padding: 4,
   },
 });
