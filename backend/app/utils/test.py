@@ -1,4 +1,3 @@
-# test_prompt_generator.py
 import os
 import requests
 import random

@@ -15,8 +15,7 @@ def generate_prompt():
     headers = {
         "Content-Type": "application/json"
     }
-    
-    # Add variety by randomly selecting different prompt types
+
     prompt_types = [
         "Generate a very short reflective question (maximum 10-12 words) about personal growth. The question must address 'you' not 'I' or 'me'.",
         "Create an extremely brief question (maximum 10-12 words) about relationships. The question must address 'you' not 'I' or 'me'.",
