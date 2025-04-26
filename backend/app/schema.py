@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import List, Optional
+from typing import List, Optional, Dict
 from datetime import datetime
 
 # User schemas
@@ -85,3 +85,17 @@ class NotificationResponse(NotificationBase):
     
     class Config:
         orm_mode = True
+
+class UserLogin(BaseModel):
+    username: str  # This can be either username or email
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenWithUser(Token):
+    user: UserResponse
+
+class TokenData(BaseModel):
+    username: Optional[str] = None
