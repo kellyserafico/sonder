@@ -17,7 +17,7 @@ def generate_prompt():
     data = {
         "contents": [{
             "parts": [{
-                "text": "Generate a thought-provoking question for a social app that users will answer. The question should encourage personal reflection and be answerable in a paragraph. Make it unique and engaging."
+                "text": "Generate a thought-provoking question for a social app that users will answer. Keep them really short, and they should primarily be focused on mental health and mental betterment."
             }]
         }],
         "generationConfig": {
