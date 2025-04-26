@@ -1,14 +1,14 @@
-import { View, Text, TextInput, TouchableOpacity, StyleSheet } from 'react-native';
+import { StyleSheet, TouchableOpacity, Text, TextInput, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
-import { router } from 'expo-router';
+import { router } from 'expo-router'; // for navigating to signup
 
-export default function SignUp() {
+export default function LoginScreen() {
   return (
     <SafeAreaProvider>
       <LinearGradient
-        colors={['#000000', '#221C2D']} // black to purple gradient
+        colors={['#000000', '#221C2D']}
         style={styles.gradient}
       >
         <SafeAreaView style={styles.container}>
@@ -18,26 +18,29 @@ export default function SignUp() {
           {/* Form */}
           <View style={styles.form}>
             <Text style={styles.label}>username</Text>
-            <TextInput style={styles.input} placeholder="" placeholderTextColor="#aaa" />
-
-            <Text style={styles.label}>email</Text>
-            <TextInput style={styles.input} placeholder="" placeholderTextColor="#aaa" keyboardType="email-address" />
+            <TextInput
+              style={styles.input}
+              placeholder=""
+              placeholderTextColor="#aaa"
+            />
 
             <Text style={styles.label}>password</Text>
-            <TextInput style={styles.input} placeholder="" placeholderTextColor="#aaa" secureTextEntry />
-
-            <Text style={styles.label}>confirm password</Text>
-            <TextInput style={styles.input} placeholder="" placeholderTextColor="#aaa" secureTextEntry />
+            <TextInput
+              style={styles.input}
+              placeholder=""
+              placeholderTextColor="#aaa"
+              secureTextEntry
+            />
           </View>
 
-          {/* Link to login */}
-          <TouchableOpacity onPress={() => router.push('/login')}>
-            <Text style={styles.link}>already registered?</Text>
+          {/* Link to signup */}
+          <TouchableOpacity onPress={() => router.push('./signup')}>
+            <Text style={styles.link}>new user?</Text>
           </TouchableOpacity>
 
-          {/* Sign Up Button */}
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>sign up</Text>
+          {/* Log In Button */}
+          <TouchableOpacity style={styles.button} onPress={() => router.push('./(tabs)/home')}>
+            <Text style={styles.buttonText}>log in</Text>
           </TouchableOpacity>
         </SafeAreaView>
       </LinearGradient>
@@ -57,10 +60,10 @@ const styles = StyleSheet.create({
   },
   title: {
     fontFamily: 'JosefinSans-Bold',
-    fontSize: 36,
-    color: '#ffffff',
-    marginBottom: 40,
+    fontSize: 64,
     fontWeight: '700',
+    color: '#ffffff',
+    marginBottom: 60,
   },
   form: {
     width: '100%',
@@ -86,7 +89,7 @@ const styles = StyleSheet.create({
     textDecorationLine: 'underline',
     fontFamily: 'JosefinSans-Regular',
     fontSize: 14,
-    marginTop: 16,
+    marginTop: 24,
   },
   button: {
     borderColor: '#ffffff',
@@ -100,7 +103,7 @@ const styles = StyleSheet.create({
   buttonText: {
     color: '#ffffff',
     fontFamily: 'JosefinSans-Regular',
-    fontSize: 20,
+    fontSize: 24,
     textTransform: 'lowercase',
   },
 });

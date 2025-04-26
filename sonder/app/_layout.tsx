@@ -31,8 +31,12 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack screenOptions={{ headerShown: false }}>
+        {/* Show onboarding FIRST */}
+        <Stack.Screen name="onboarding" />
+        {/* After onboarding, tabs app */}
+        <Stack.Screen name="(tabs)" />
+        {/* 404 Page */}
         <Stack.Screen name="+not-found" />
       </Stack>
       <StatusBar style="auto" />

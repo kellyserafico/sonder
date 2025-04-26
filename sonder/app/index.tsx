@@ -2,8 +2,9 @@ import { StyleSheet, TouchableOpacity, Text, View } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { router } from 'expo-router'; 
 
-export default function HomeScreen() {
+export default function OnboardingScreen() { 
   return (
     <SafeAreaProvider>
       <LinearGradient
@@ -16,11 +17,13 @@ export default function HomeScreen() {
           </View>
 
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button}>
+            {/* Log In Button */}
+            <TouchableOpacity style={styles.button} onPress={() => router.push('./login')}>
               <Text style={styles.buttonText}>log in</Text>
             </TouchableOpacity>
 
-            <TouchableOpacity style={styles.button}>
+            {/* Sign Up Button */}
+            <TouchableOpacity style={styles.button} onPress={() => router.push('./signup')}>
               <Text style={styles.buttonText}>sign up</Text>
             </TouchableOpacity>
           </View>
