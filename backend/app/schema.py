@@ -34,13 +34,14 @@ class PromptResponse(PromptBase):
     
     class Config:
         orm_mode = True
-
-# Response schemas
+        
 class ResponseBase(BaseModel):
     content: str
+    image: str = None 
 
 class ResponseCreate(ResponseBase):
     prompt_id: int
+    anonymous: bool
 
 class ResponseResponse(ResponseBase):
     id: int
@@ -49,6 +50,7 @@ class ResponseResponse(ResponseBase):
     
     class Config:
         orm_mode = True
+
 
 # Comment schemas
 class CommentBase(BaseModel):
