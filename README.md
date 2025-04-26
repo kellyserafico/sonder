@@ -7,8 +7,6 @@ A modern web application that helps users discover late-night dining spots in th
 - 🗺️ Real-time location-based search
 - 🎯 Interactive map with custom markers
 - 🕒 Late-night filter for spots open after 10 PM
-- 🎨 Beautiful, responsive dark UI
-- 📱 Mobile-friendly design
 
 ## Tech Stack
 
