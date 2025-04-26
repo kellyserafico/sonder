@@ -24,7 +24,7 @@ def generate_prompt():
             "temperature": 0.7,
             "topK": 40,
             "topP": 0.95,
-            "maxOutputTokens": 100,
+            "maxOutputTokens": 50,
         }
     }
     
