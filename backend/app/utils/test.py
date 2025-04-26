@@ -4,7 +4,7 @@ import requests
 from dotenv import load_dotenv
 
 def test_gemini_prompt_generator():
-    """Test function to generate a prompt with Gemini and print to console"""
+    """Test function to generate a shorter prompt with Gemini and print to console"""
 
     load_dotenv()
 
@@ -23,14 +23,14 @@ def test_gemini_prompt_generator():
     data = {
         "contents": [{
             "parts": [{
-                "text": "Generate a thought-provoking question for a social app that users will answer. The question should encourage personal reflection and be answerable in a paragraph. Make it unique and engaging."
+                "text": "Generate a brief, thought-provoking question for a social app that users will answer. The question should be concise (under 10 words if possible) while still encouraging personal reflection. Keep it engaging but short."
             }]
         }],
         "generationConfig": {
             "temperature": 0.7,
             "topK": 40,
             "topP": 0.95,
-            "maxOutputTokens": 100,
+            "maxOutputTokens": 50,  # Reduced from 100 to 50
         }
     }
 
@@ -45,10 +45,15 @@ def test_gemini_prompt_generator():
         if response.status_code == 200:
             result = response.json()
             prompt_text = result["candidates"][0]["content"]["parts"][0]["text"]
+            prompt_text = prompt_text.strip()
+            if len(prompt_text) > 100:
+                prompt_text = prompt_text.split('.')[0] + '.' 
+                
             print("\n=== Generated Prompt ===")
-            print(prompt_text.strip())
+            print(prompt_text)
+            print(f"Length: {len(prompt_text)} characters")
             print("========================")
-            return prompt_text.strip()
+            return prompt_text
         else:
             print(f"Error: API returned status code {response.status_code}")
             return None
