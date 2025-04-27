@@ -2,6 +2,8 @@ import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-nativ
 import { useState } from 'react';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Alert, Platform, ToastAndroid } from 'react-native';
 
 export default function AnswerPrompt() {
   const [response, setResponse] = useState('');
@@ -11,26 +13,35 @@ export default function AnswerPrompt() {
   const formattedDate = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
   const handleSubmit = () => {
-    console.log('Submitted response:', response);
-    // You can add code to post this to your database
-    router.back(); // go back to previous page after submit
+    if (response.trim() === '') return;
+  
+    if (Platform.OS === 'android') {
+      ToastAndroid.show('response submitted!', ToastAndroid.SHORT);
+    } else {
+      Alert.alert('response submitted!');
+    }
+  
+    router.replace('/');
   };
+  
 
   const handleClose = () => {
-    router.back(); // just go back
+    router.replace('/home');
   };
 
   return (
-    <View style={styles.container}>
-      {/* Top Header */}
+    <LinearGradient
+      colors={['#000000', '#221C2D']}
+      style={styles.container}
+    >
+      {/* Header */}
       <View style={styles.header}>
-  <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
-    <Ionicons name="close" size={28} color="#ffffff" />
-  </TouchableOpacity>
+        <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+          <Ionicons name="close" size={28} color="#ffffff" />
+        </TouchableOpacity>
 
-  <Text style={styles.title}>sonder</Text>
-</View>
-
+        <Text style={styles.title}>sonder</Text>
+      </View>
 
       {/* Date */}
       <Text style={styles.dateText}>{formattedDate}</Text>
@@ -38,7 +49,7 @@ export default function AnswerPrompt() {
       {/* Prompt */}
       <Text style={styles.prompt}>what’s on your mind?</Text>
 
-      {/* Text input box */}
+      {/* Text input */}
       <TextInput
         style={styles.textArea}
         placeholder="type your response..."
@@ -48,18 +59,20 @@ export default function AnswerPrompt() {
         onChangeText={setResponse}
       />
 
+      {/* Spacer */}
+      <View style={{ flex: 1 }} />
+
       {/* Submit button */}
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitButtonText}>submit</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000000',
     padding: 24,
     paddingTop: 48,
   },
@@ -80,7 +93,6 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
   },
-  
   dateText: {
     fontFamily: 'JosefinSans-Regular',
     fontSize: 18,
@@ -103,8 +115,8 @@ const styles = StyleSheet.create({
     fontFamily: 'JosefinSans-Regular',
     fontSize: 16,
     color: '#ffffff',
-    height: 200,
-    textAlignVertical: 'top', // ensure text starts at top
+    height: 300,
+    textAlignVertical: 'top',
     marginBottom: 24,
   },
   submitButton: {
@@ -115,6 +127,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     width: '70%',
     alignSelf: 'center',
+    marginBottom: 24,
   },
   submitButtonText: {
     color: '#ffffff',
