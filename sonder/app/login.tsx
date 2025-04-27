@@ -9,7 +9,8 @@ import {
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { useRouter } from "expo-router";
-import CryptoJS from "crypto-js";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 
 export default function LoginScreen() {
   const [username, setUsername] = useState("");
@@ -43,7 +44,7 @@ export default function LoginScreen() {
         alert("Invalid password format");
         return;
       }
-      console.log("HASHPASS BEFORE CHECK:", storedHashedPassword)
+      console.log("HASHPASS BEFORE CHECK:", storedHashedPassword);
 
       // Send password and stored hash/salt to the backend for validation
       const isPasswordValid = await verifyPassword(
@@ -53,6 +54,7 @@ export default function LoginScreen() {
       );
 
       if (isPasswordValid) {
+        await AsyncStorage.setItem("userId", user.id.toString());
         router.push("./(tabs)/home");
       } else {
         alert("Invalid password");
@@ -70,7 +72,6 @@ export default function LoginScreen() {
     storedSalt: string
   ) => {
     try {
-      
       const response = await fetch("http://localhost:8000/password/verify", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -88,7 +89,7 @@ export default function LoginScreen() {
 
       const data = await response.json();
       // Return true if the password is correct
-      console.log("DATA RESPONSE:", data)
+      console.log("DATA RESPONSE:", data);
       return data.message === "Password is correct";
     } catch (error) {
       console.error("Error verifying password:", error);

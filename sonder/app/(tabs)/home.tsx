@@ -13,6 +13,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
 import Post from "../../components/feed/Post";
 import { Link } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 
 interface Prompt {
@@ -38,6 +39,22 @@ export default function FeedScreen() {
   const [selectedTab, setSelectedTab] = useState("trending");
   const [prompt, setPrompt] = useState<Prompt | null>(null);
   const [responses, setResponses] = useState<Response[]>([]);
+  const [storedTasks, setStoredTasks] = useState<string | null>(null);
+
+  // Fetch AsyncStorage data
+  useEffect(() => {
+    async function fetchTasks() {
+      try {
+        const value = await AsyncStorage.getItem('userId');
+        setStoredTasks(value); 
+        console.log("ASYNC:", value)
+      } catch (error) {
+        console.error('Error retrieving tasks from AsyncStorage', error);
+      }
+    }
+
+    fetchTasks();
+  }, []);
 
   //get the prompts
   useEffect(() => {
@@ -96,6 +113,7 @@ export default function FeedScreen() {
 
     getAllResponses();
   }, [prompt]);
+
 
   return (
     <SafeAreaProvider>
