@@ -36,17 +36,23 @@ class PromptResponse(PromptBase):
         orm_mode = True
         
 class ResponseBase(BaseModel):
-    content: str
-    image: str = None 
+    content: Optional[str] = None 
+    image: Optional[str] = None
+
+from typing import Optional
 
 class ResponseCreate(ResponseBase):
-    prompt_id: int
-    anonymous: bool
+    prompt_id: Optional[int] = None  
+    anonymous: Optional[bool] = None  
+    image: Optional[str] = None      
+    likes: Optional[int] = None     
+
 
 class ResponseResponse(ResponseBase):
     id: int
     user_id: int
     prompt_id: int
+    likes: int
     
     class Config:
         orm_mode = True

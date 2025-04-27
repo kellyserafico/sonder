@@ -126,7 +126,7 @@ def reset_password(user_id: int, password_data: schemas.PasswordReset, db: Sessi
     return db_user
 
 # Delete user
-@router.delete("/{user_id}")
+@router.delete("/{user_id}", status_code=status.HTTP_200_OK)
 def delete_user(user_id: int, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.id == user_id).first()
     if db_user is None:
