@@ -44,7 +44,7 @@ export default function FeedScreen() {
         <FlatList
           data={responses}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Post username={item.user_id} text={item.response_text} />}
+          renderItem={({ item }) => <Post username={item.user_id} text={item.response_text} likes={item.likes} date={item.date} />}
           contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 8 }}
         />
 

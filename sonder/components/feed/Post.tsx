@@ -5,14 +5,15 @@ import { useRouter } from 'expo-router';
 interface PostProps {
   username: string;
   text: string;
-  postImage?: any;
+  postImage?: string | null; // external URL or null
+  date: string;
+  likes: number;
 }
 
-export default function Post({ username, text, postImage }: PostProps) {
+export default function Post({ username, text, postImage, date, likes }: PostProps) {
   const router = useRouter();
 
   const handleProfilePress = () => {
-    console.log('Profile pic clicked!');
     router.push({
       pathname: '/viewprofile',
       params: { username },
@@ -20,15 +21,14 @@ export default function Post({ username, text, postImage }: PostProps) {
   };
 
   const handlePostPress = () => {
-    console.log('Post clicked!');
     router.push({
       pathname: '/postdetail',
       params: {
         username,
         text,
-        date: '5:11PM 4/26/25', // example placeholder
-        likes: 16, // example placeholder
-        comments: 2, // example placeholder
+        date,
+        likes,
+        comments: 2, // you can expand later
       },
     });
   };
@@ -55,19 +55,24 @@ export default function Post({ username, text, postImage }: PostProps) {
         {/* Show post image if available */}
         {postImage && (
           <Image
-            source={postImage}
+            source={{ uri: postImage }}
             style={styles.postImage}
             resizeMode="cover"
           />
         )}
-        
+
+        {/* Date */}
+        <Text style={styles.dateText}>{new Date(date).toLocaleString()}</Text>
+
         {/* Post actions */}
         <View style={styles.actions}>
           <TouchableOpacity style={styles.iconButton}>
             <Feather name="heart" size={20} color="#ffffff" />
+            <Text style={styles.actionText}>{likes}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton}>
             <Feather name="message-circle" size={20} color="#ffffff" />
+            <Text style={styles.actionText}>2</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
@@ -111,12 +116,25 @@ const styles = StyleSheet.create({
     marginTop: 8,
     marginBottom: 8,
   },
+  dateText: {
+    color: '#aaaaaa',
+    fontSize: 12,
+    marginTop: 4,
+  },
   actions: {
     flexDirection: 'row',
     gap: 12,
     marginTop: 8,
+    alignItems: 'center',
   },
   iconButton: {
-    padding: 4,
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  actionText: {
+    color: '#ffffff',
+    fontFamily: 'JosefinSans-Regular',
+    fontSize: 14,
   },
 });
