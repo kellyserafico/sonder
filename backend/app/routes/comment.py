@@ -52,6 +52,8 @@ async def get_comments_by_response(response_id: int, db: Session = Depends(get_d
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"Database error: {str(e)}")
 
+
+###DON"T NEED RN###
 # # Endpoint to get comments by a specific user
 # @router.get("/user/{user_id}", response_model=List[CommentResponse])
 # async def get_comments_by_user(user_id: int, db: Session = Depends(get_db)):
