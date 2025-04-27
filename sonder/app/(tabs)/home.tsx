@@ -9,32 +9,11 @@ import {
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect } from "react";
+import { useNavigation } from '@react-navigation/native';
 import { Ionicons } from "@expo/vector-icons";
 import Post from "../../components/feed/Post";
-import responses from "../../responses.json";
+import { Link } from "expo-router";
 
-const posts = [
-  {
-    id: "1",
-    username: "sjdklf",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-  {
-    id: "2",
-    username: "sjdklf",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-  {
-    id: "3",
-    username: "sjdklf",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-  {
-    id: "4",
-    username: "sjdklf",
-    text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-  },
-];
 
 interface Prompt {
   id: number;
@@ -59,6 +38,7 @@ export default function FeedScreen() {
   const [selectedTab, setSelectedTab] = useState("trending");
   const [prompt, setPrompt] = useState<Prompt | null>(null);
   const [responses, setResponses] = useState<Response[]>([]);
+  const navigation = useNavigation();
 
   //get the prompts
   useEffect(() => {
@@ -179,8 +159,10 @@ export default function FeedScreen() {
 
         {/* Floating Add Button */}
         <TouchableOpacity style={styles.floatingButton}>
-          <Ionicons name="add" size={32} color="white" />
-        </TouchableOpacity>
+  <Link href="/answerprompt">
+    <Ionicons name="add" size={32} color="white" />
+  </Link>
+</TouchableOpacity>
       </SafeAreaView>
     </SafeAreaProvider>
   );

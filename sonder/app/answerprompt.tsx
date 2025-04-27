@@ -121,7 +121,7 @@ const PromptScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#1A1A1A',
+    backgroundColor: 'black',
     ...(Platform.OS === 'web' && {
       maxWidth: 800,
       marginHorizontal: 'auto',
