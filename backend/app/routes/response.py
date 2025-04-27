@@ -52,7 +52,7 @@ def read_responses(user_id: int, skip: int = 0, limit: int = 100, db: Session = 
     return responses
 
 # Read all responses by prompt
-@router.get("/{prompt_id}", response_model=List[schemas.ResponseResponse])
+@router.get("/prompt/{prompt_id}", response_model=List[schemas.ResponseResponse])
 def read_responses(prompt_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
     responses = db.query(models.Response).filter(models.Response.prompt_id == prompt_id).offset(skip).limit(limit).all()
     return responses
