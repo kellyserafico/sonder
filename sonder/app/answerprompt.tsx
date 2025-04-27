@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import {
   View,
   Text,
@@ -8,6 +9,14 @@ import {
 import { useState, useEffect } from "react";
 import { useRouter } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
+=======
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
+import { LinearGradient } from 'expo-linear-gradient';
+import { Alert, Platform, ToastAndroid } from 'react-native';
+>>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
 
 interface Prompt {
   id: number;
@@ -44,18 +53,34 @@ export default function AnswerPrompt() {
   }, []);
 
   const handleSubmit = () => {
+<<<<<<< HEAD
     console.log("Submitted response:", response);
     // You can add code to post this to your database
     router.back(); // go back to previous page after submit
+=======
+    if (response.trim() === '') return;
+  
+    if (Platform.OS === 'android') {
+      ToastAndroid.show('response submitted!', ToastAndroid.SHORT);
+    } else {
+      Alert.alert('response submitted!');
+    }
+  
+    router.replace('/');
+>>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
   };
+  
 
   const handleClose = () => {
-    router.back(); // just go back
+    router.replace('/home');
   };
 
   return (
-    <View style={styles.container}>
-      {/* Top Header */}
+    <LinearGradient
+      colors={['#000000', '#221C2D']}
+      style={styles.container}
+    >
+      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
           <Ionicons name="close" size={28} color="#ffffff" />
@@ -72,7 +97,7 @@ export default function AnswerPrompt() {
         {prompt?.content || "Loading prompt..."}
       </Text>
 
-      {/* Text input box */}
+      {/* Text input */}
       <TextInput
         style={styles.textArea}
         placeholder="type your response..."
@@ -82,18 +107,24 @@ export default function AnswerPrompt() {
         onChangeText={setResponse}
       />
 
+      {/* Spacer */}
+      <View style={{ flex: 1 }} />
+
       {/* Submit button */}
       <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
         <Text style={styles.submitButtonText}>submit</Text>
       </TouchableOpacity>
-    </View>
+    </LinearGradient>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+<<<<<<< HEAD
     backgroundColor: "#000000",
+=======
+>>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
     padding: 24,
     paddingTop: 48,
   },
@@ -114,7 +145,10 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
   },
+<<<<<<< HEAD
 
+=======
+>>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
   dateText: {
     fontFamily: "JosefinSans-Regular",
     fontSize: 18,
@@ -136,9 +170,15 @@ const styles = StyleSheet.create({
     padding: 16,
     fontFamily: "JosefinSans-Regular",
     fontSize: 16,
+<<<<<<< HEAD
     color: "#ffffff",
     height: 200,
     textAlignVertical: "top", // ensure text starts at top
+=======
+    color: '#ffffff',
+    height: 300,
+    textAlignVertical: 'top',
+>>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
     marginBottom: 24,
   },
   submitButton: {
@@ -146,9 +186,16 @@ const styles = StyleSheet.create({
     borderColor: "#ffffff",
     borderRadius: 25,
     paddingVertical: 12,
+<<<<<<< HEAD
     alignItems: "center",
     width: "70%",
     alignSelf: "center",
+=======
+    alignItems: 'center',
+    width: '70%',
+    alignSelf: 'center',
+    marginBottom: 24,
+>>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
   },
   submitButtonText: {
     color: "#ffffff",
