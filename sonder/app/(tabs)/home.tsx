@@ -1,8 +1,8 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Feather } from '@expo/vector-icons';
 import { useState } from 'react';
+import { Ionicons } from '@expo/vector-icons'; // Only Ionicons now
 
 const posts = [
   { id: '1', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
@@ -53,6 +53,11 @@ export default function FeedScreen() {
           renderItem={({ item }) => <Post username={item.username} text={item.text} />}
           contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 8 }}
         />
+
+        {/* Floating Add Button */}
+        <TouchableOpacity style={styles.floatingButton}>
+          <Ionicons name="add" size={32} color="white" />
+        </TouchableOpacity>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -70,10 +75,10 @@ function Post({ username, text }: { username: string; text: string }) {
         <Text style={styles.postText}>{text}</Text>
         <View style={styles.actions}>
           <TouchableOpacity style={styles.iconButton}>
-            <Feather name="heart" size={20} color="#ffffff" />
+            <Ionicons name="heart-outline" size={20} color="#ffffff" />
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton}>
-            <Feather name="message-circle" size={20} color="#ffffff" />
+            <Ionicons name="chatbubble-outline" size={20} color="#ffffff" />
           </TouchableOpacity>
         </View>
       </View>
@@ -128,7 +133,7 @@ const styles = StyleSheet.create({
   },
   activeTab: {
     borderBottomWidth: 2,
-    borderBottomColor: '#C084FC', // purple underline
+    borderBottomColor: '#C084FC',
   },
   postContainer: {
     flexDirection: 'row',
@@ -163,5 +168,17 @@ const styles = StyleSheet.create({
   },
   iconButton: {
     padding: 4,
+  },
+  floatingButton: {
+    position: 'absolute',
+    bottom: 24,
+    right: 24,
+    backgroundColor: '#6F31EC',
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    justifyContent: 'center',
+    alignItems: 'center',
+    elevation: 5,
   },
 });

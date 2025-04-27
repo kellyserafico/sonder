@@ -17,7 +17,7 @@ export default function LoginScreen() {
 
           {/* Form */}
           <View style={styles.form}>
-            <Text style={styles.label}>username</Text>
+            <Text style={styles.label}>username/email</Text>
             <TextInput
               style={styles.input}
               placeholder=""
