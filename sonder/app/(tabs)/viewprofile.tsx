@@ -36,7 +36,7 @@ export default function ViewProfile() {
         <View style={{ gap: 20, marginTop: 20 }}>
           {/* Example posts */}
           <Post username={username} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-          <Post username={username} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." hasImage />
+          <Post username={username} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."  />
         </View>
       </ScrollView>
     </SafeAreaView>

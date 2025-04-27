@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, TextInput, FlatList, TouchableOpacity, Image } 
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useRouter } from 'expo-router';
 
 const mockUsers = [
   { id: '1', username: 'sonderdreams', profileImage: 'https://via.placeholder.com/50' },
@@ -12,6 +13,7 @@ const mockUsers = [
 ];
 
 export default function Search() {
+  const router = useRouter();
   const [searchQuery, setSearchQuery] = useState('');
 
   // Filter users based on search input
@@ -37,7 +39,7 @@ export default function Search() {
             data={filteredUsers}
             keyExtractor={(item) => item.id}
             renderItem={({ item }) => (
-              <TouchableOpacity style={styles.userItem}>
+              <TouchableOpacity style={styles.userItem} onPress={() => router.push({ pathname: '/viewprofile', params: { username: item.username } })}>
                 <Image source={{ uri: item.profileImage }} style={styles.profileImage} />
                 <Text style={styles.username}>@{item.username}</Text>
               </TouchableOpacity>
