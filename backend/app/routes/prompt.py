@@ -78,7 +78,7 @@ def update_prompt_off(prompt_id: int, db: Session = Depends(get_db)):
     return db_prompt
 
 # Delete user
-@router.delete("/{prompt_id}")
+@router.delete("/{prompt_id}", status_code=status.HTTP_200_OK)
 def delete_prompt(prompt_id: int, db: Session = Depends(get_db)):
     db_prompt = db.query(models.Prompt).filter(models.Prompt.id == prompt_id).first()
     if db_prompt is None:

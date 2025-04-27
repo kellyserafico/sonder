@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 # Import your routers here
-from .routes import user, prompt, auth  # Add other routes as you implement them
+from .routes import user, prompt, auth, response  # Add other routes as you implement them
 
 
 app = FastAPI(title="Sonder API")
@@ -20,7 +20,7 @@ app.add_middleware(
 app.include_router(user.router)
 # Include other routers as you implement them
 app.include_router(prompt.router)
-# app.include_router(responses.router)
+app.include_router(response.router)
 # app.include_router(comments.router)
 # app.include_router(notifications.router)
 app.include_router(auth.router)
