@@ -10,6 +10,8 @@ import {
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { Feather } from "@expo/vector-icons";
 import { useEffect, useState } from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage"
+
 
 type Response = {
   id: number;
@@ -30,13 +32,31 @@ async function getUsername(userId: number): Promise<string> {
   }
 }
 
+
+
 export default function PostDetail() {
   const { username, text, date, likes, comments, response_id } =
     useLocalSearchParams();
   const router = useRouter();
   const [commentList, setCommentList] = useState<Response[]>([]);
+  const [comment, setComment] = useState("");
+  const [userId, setUserId] = useState(0);
 
-  console.log(response_id);
+
+    // Fetch AsyncStorage data
+    useEffect(() => {
+      async function fetchTasks() {
+        try {
+          const value = await AsyncStorage.getItem("userId")
+          setUserId(value ? parseInt(value) : 0);
+        } catch (error) {
+          console.error("Error retrieving tasks from AsyncStorage", error)
+        }
+      }
+  
+      fetchTasks()
+    }, [])
+
   useEffect(() => {
     async function getAllResponses() {
       if (!response_id) return;
@@ -62,6 +82,41 @@ export default function PostDetail() {
   
     getAllResponses();
   }, [response_id]);
+
+  const handleSendComment = async () => {
+    if (!comment.trim()) return; // don't send empty comment
+    try {
+      const res = await fetch(`http://localhost:8000/comment/${response_id}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          content: comment,
+          user_id: userId, 
+        }),
+      });
+  
+      if (!res.ok) {
+        console.error("Failed to send comment:", await res.text());
+        return;
+      }
+  
+      const newComment = await res.json();
+  
+      // Fetch username for the new comment
+      const username = await getUsername(newComment.user_id);
+  
+      setCommentList((prev) => [
+        ...prev,
+        { ...newComment, username },
+      ]);
+      setComment(""); // clear input after successful send
+    } catch (error) {
+      console.error("Error sending comment:", error);
+    }
+  };
+  
   
 
   return (
@@ -131,7 +186,15 @@ export default function PostDetail() {
           style={styles.commentInput}
           placeholder="write a comment..."
           placeholderTextColor="#aaa"
+          value={comment}
+          onChangeText={setComment}
         />
+        <TouchableOpacity 
+          style={styles.sendButton}
+          onPress={handleSendComment}
+        >
+          <Feather name="send" size={20} color="#fff" />
+        </TouchableOpacity>
       </View>
     </View>
   );
@@ -199,11 +262,14 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   commentInputContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
     padding: 12,
     borderTopWidth: 1,
     borderTopColor: "#333",
   },
   commentInput: {
+    flex: 1,
     backgroundColor: "#000",
     borderColor: "#fff",
     borderWidth: 1,
@@ -211,5 +277,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     color: "#fff",
     height: 40,
+    marginRight: 10,
+  },
+  sendButton: {
+    backgroundColor: "#C084FC",
+    borderRadius: 20,
+    width: 40,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
  });
