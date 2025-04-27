@@ -6,17 +6,6 @@ import { Ionicons } from '@expo/vector-icons';
 import Post from "../../components/feed/Post"
 import responses from "../../responses.json"
 
-const posts = [
-  { id: '1', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-  { id: '2', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-  { id: '3', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-  { id: '4', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-];
-
-
-
-
-
 export default function FeedScreen() {
   const [selectedTab, setSelectedTab] = useState('trending');
   const [prompt, setPrompt] = useState('trending');
