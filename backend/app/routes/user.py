@@ -66,6 +66,7 @@ def read_user(user_id: int, db: Session = Depends(get_db)):
         )
     return db_user
 
+
 # Update user
 @router.put("/{user_id}", response_model=schemas.UserResponse)
 def update_user(user_id: int, user: schemas.UserBase, db: Session = Depends(get_db)):
@@ -138,17 +139,3 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     db.delete(db_user)
     db.commit()
     return {"message":"Deleted User"}
-
-
-# search for user (username)
-@router.get("/search/username/{username}", response_model=List[schemas.UserResponse])
-def search_user(username: str, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.username.ilike(f"%{username}%")).all()
-    if not db_user:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail = "User not found"
-            )
-    return db_user
-
-
