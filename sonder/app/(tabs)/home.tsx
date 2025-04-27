@@ -1,38 +1,46 @@
-"use client"
+"use client";
 
-import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList, Platform } from "react-native"
-import { SafeAreaProvider } from "react-native-safe-area-context"
-import { SafeAreaView } from "react-native-safe-area-context"
-import { useState, useEffect } from "react"
-import { Ionicons } from "@expo/vector-icons"
-import Post from "../../components/feed/Post"
-import { Link } from "expo-router"
-import AsyncStorage from "@react-native-async-storage/async-storage"
-import { LinearGradient } from "expo-linear-gradient"
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  FlatList,
+  Platform,
+} from "react-native";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaView } from "react-native-safe-area-context";
+import { useState, useEffect } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import Post from "../../components/feed/Post";
+import { Link } from "expo-router";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { LinearGradient } from "expo-linear-gradient";
 
 interface Prompt {
-  id: number
-  content: string
-  created_at: string
-  scheduled_for?: string
-  is_active: boolean
+  id: number;
+  content: string;
+  created_at: string;
+  scheduled_for?: string;
+  is_active: boolean;
 }
 
 interface Response {
-  id: number
-  content: string
-  image: string | null
-  likes: number
-  prompt_id: number
-  user_id: number
-  username: string
-  date: string
+  id: number;
+  content: string;
+  image: string | null;
+  likes: number;
+  prompt_id: number;
+  user_id: number;
+  username: string;
+  date: string;
 }
 
 export default function FeedScreen() {
-  const [selectedTab, setSelectedTab] = useState("trending")
-  const [prompt, setPrompt] = useState<Prompt | null>(null)
-  const [responses, setResponses] = useState<Response[]>([])
+  const [selectedTab, setSelectedTab] = useState("trending");
+  const [prompt, setPrompt] = useState<Prompt | null>(null);
+  const [responses, setResponses] = useState<Response[]>([]);
 
   // // Fetch AsyncStorage data
   // useEffect(() => {
@@ -53,55 +61,59 @@ export default function FeedScreen() {
   useEffect(() => {
     async function getCurrentPrompt() {
       try {
-        const res = await fetch("http://localhost:8000/prompt/current")
-        const data = await res.json()
-        setPrompt(data[0])
-        console.log("DATA", data)
+        const res = await fetch("http://localhost:8000/prompt/current");
+        const data = await res.json();
+        setPrompt(data[0]);
+        console.log("DATA", data);
       } catch (error) {
-        console.error("Failed to fetch prompts:", error)
+        console.error("Failed to fetch prompts:", error);
       }
     }
 
-    getCurrentPrompt()
-  }, [])
+    getCurrentPrompt();
+  }, []);
 
   useEffect(() => {
     async function getAllResponses() {
-      if (!prompt) return
+      if (!prompt) return;
 
       try {
-        const res = await fetch(`http://localhost:8000/response/prompt/${prompt.id}`)
-        const responseData: Response[] = await res.json()
+        const res = await fetch(
+          `http://localhost:8000/response/prompt/${prompt.id}`
+        );
+        const responseData: Response[] = await res.json();
 
         const enhancedResponses = await Promise.all(
           responseData.map(async (response: Response) => {
             try {
-              const userRes = await fetch(`http://localhost:8000/user/${response.user_id}`)
-              const userData = await userRes.json()
+              const userRes = await fetch(
+                `http://localhost:8000/user/${response.user_id}`
+              );
+              const userData = await userRes.json();
 
               return {
                 ...response,
                 username: userData.username ?? "Unknown User",
-              }
+              };
             } catch (error) {
-              console.error(`Failed to fetch user ${response.user_id}:`, error)
+              console.error(`Failed to fetch user ${response.user_id}:`, error);
               return {
                 ...response,
                 username: "Unknown User",
                 date: response.date,
-              }
+              };
             }
-          }),
-        )
+          })
+        );
 
-        setResponses(enhancedResponses)
+        setResponses(enhancedResponses);
       } catch (error) {
-        console.error("Failed to fetch responses:", error)
+        console.error("Failed to fetch responses:", error);
       }
     }
 
-    getAllResponses()
-  }, [prompt])
+    getAllResponses();
+  }, [prompt]);
 
   return (
     <SafeAreaProvider>
@@ -109,7 +121,14 @@ export default function FeedScreen() {
         {/* Header */}
         <View style={styles.header}>
           <Text style={styles.title}>sonder</Text>
-          <Image source={{ uri: "https://via.placeholder.com/80" }} style={styles.profilePic} />
+          <TouchableOpacity>
+            <Link href="/profile">
+              <Image
+                source={{ uri: "https://via.placeholder.com/80" }}
+                style={styles.profilePic}
+              />
+            </Link>
+          </TouchableOpacity>
         </View>
 
         {/* Prompt */}
@@ -121,13 +140,22 @@ export default function FeedScreen() {
             end={{ x: 1, y: 1 }}
           />
           <View style={styles.wavyOverlay} />
-          <Text style={styles.prompt}>{prompt?.content || "Loading prompt..."}</Text>
+          <Text style={styles.prompt}>
+            {prompt?.content || "Loading prompt..."}
+          </Text>
         </View>
 
         {/* Tabs */}
         <View style={styles.tabs}>
           <TouchableOpacity onPress={() => setSelectedTab("trending")}>
-            <Text style={[styles.tabText, selectedTab === "trending" && styles.activeTab]}>trending</Text>
+            <Text
+              style={[
+                styles.tabText,
+                selectedTab === "trending" && styles.activeTab,
+              ]}
+            >
+              trending
+            </Text>
           </TouchableOpacity>
 
           {/* <TouchableOpacity onPress={() => setSelectedTab("following")}>
@@ -159,7 +187,7 @@ export default function FeedScreen() {
         </TouchableOpacity>
       </SafeAreaView>
     </SafeAreaProvider>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -289,4 +317,4 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.5,
     shadowRadius: 8,
   },
-})
+});

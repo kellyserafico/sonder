@@ -1,20 +1,20 @@
-
 import { useState, useEffect } from 'react';
 import { StyleSheet, View, Text, TextInput, FlatList, TouchableOpacity, Image, ActivityIndicator } from 'react-native';
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
 
-// const mockUsers = [
-//   { id: '1', username: 'sonderdreams', profileImage: 'https://via.placeholder.com/50' },
-//   { id: '2', username: 'wanderer', profileImage: 'https://via.placeholder.com/50' },
-//   { id: '3', username: 'lostandfound', profileImage: 'https://via.placeholder.com/50' },
-//   { id: '4', username: 'johndoe', profileImage: 'https://via.placeholder.com/50' },
-// ];
+// Mock user data
+const mockUsers = [
+  { id: '1', username: 'asuh10282', profileImage: 'https://via.placeholder.com/50' },
+  { id: '2', username: 'HarryPotter10', profileImage: 'https://via.placeholder.com/50' },
+  { id: '3', username: 'testuser', profileImage: 'https://via.placeholder.com/50' },
+  { id: '4', username: 'CoolGuy123', profileImage: 'https://via.placeholder.com/50' },
+];
 
 // Define the user type (TypeScript)
 interface User {
-  id: number;  // or string if your backend sends string
+  id: string;  // ID is a string for mock data
   username: string;
   profileImage?: string;  // optional in case not all users have one
 }
@@ -22,23 +22,22 @@ interface User {
 export default function Search() {
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState<string>('');
-  const [filteredUsers, setFilteredUsers] = useState<User[]>([]);
+  const [filteredUsers, setFilteredUsers] = useState<User[]>(mockUsers); // Initially use mockUsers
   const [loading, setLoading] = useState<boolean>(false);
 
   useEffect(() => {
     const fetchUsers = async () => {
       if (searchQuery.trim() === '') {
-        setFilteredUsers([]);  // Clear if input is empty
+        setFilteredUsers(mockUsers);  // Show all users if input is empty
         return;
       }
       try {
         setLoading(true);
-        const response = await fetch(`http://YOUR_BACKEND_URL/search/username/${searchQuery}`); 
-        if (!response.ok) {
-          throw new Error('Failed to fetch users');
-        }
-        const data: User[] = await response.json();
-        setFilteredUsers(data);
+        // Mock fetching users by filtering based on search query
+        const filtered = mockUsers.filter((user) =>
+          user.username.toLowerCase().includes(searchQuery.toLowerCase())
+        );
+        setFilteredUsers(filtered);
       } catch (error) {
         console.error('Error fetching users:', error);
         setFilteredUsers([]);
