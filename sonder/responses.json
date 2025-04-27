@@ -1,0 +1,43 @@
+[
+    {
+      "id": "1",
+      "user_id": "user123",
+      "response_text": "Cats are the best companions ever!",
+      "image": "https://placekitten.com/400/300",
+      "date": "2024-04-25T10:30:00Z",
+      "likes": 25
+    },
+    {
+      "id": "2",
+      "user_id": "user456",
+      "response_text": "Chilling with my dog today 🐶",
+      "image": "https://placedog.net/400/300?id=2",
+      "date": "2024-04-24T14:20:00Z",
+      "likes": 42
+    },
+    {
+      "id": "3",
+      "user_id": "user789",
+      "response_text": "Nothing beats a cozy afternoon with coffee and a book ☕📚",
+      "image": null,
+      "date": "2024-04-23T09:15:00Z",
+      "likes": 31
+    },
+    {
+      "id": "4",
+      "user_id": "user321",
+      "response_text": "Sunsets are proof that endings can be beautiful 🌅",
+      "image": "https://source.unsplash.com/400x300/?sunset",
+      "date": "2024-04-22T19:00:00Z",
+      "likes": 57
+    },
+    {
+      "id": "5",
+      "user_id": "user654",
+      "response_text": "Trying out a new recipe today! 🍝",
+      "image": null,
+      "date": "2024-04-21T17:45:00Z",
+      "likes": 18
+    }
+  ]
+  

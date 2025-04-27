@@ -4,13 +4,8 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import Post from "../../components/feed/Post"
+import responses from "../../responses.json"
 
-const posts = [
-  { id: '1', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-  { id: '2', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-  { id: '3', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-  { id: '4', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
-];
 
 export default function FeedScreen() {
   const [selectedTab, setSelectedTab] = useState('trending');
@@ -28,9 +23,7 @@ export default function FeedScreen() {
         </View>
 
         {/* Prompt */}
-        <TouchableOpacity>
           <Text style={styles.prompt}>how are you?</Text>
-        </TouchableOpacity>
 
         {/* Tabs */}
         <View style={styles.tabs}>
@@ -49,9 +42,9 @@ export default function FeedScreen() {
 
         {/* Post List */}
         <FlatList
-          data={posts}
+          data={responses}
           keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <Post username={item.username} text={item.text} />}
+          renderItem={({ item }) => <Post username={item.user_id} text={item.response_text} />}
           contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 8 }}
         />
 

@@ -5,6 +5,7 @@ import { useRouter } from 'expo-router';
 interface PostProps {
   username: string;
   text: string;
+  postImage?: any;
 }
 
 export default function Post({ username, text }: PostProps) {
