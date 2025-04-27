@@ -1,202 +1,125 @@
-import React, { useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-  SafeAreaView,
-  ActivityIndicator,
-  Alert,
-  Platform,
-} from 'react-native';
+import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
+import { useState } from 'react';
+import { useRouter } from 'expo-router';
+import { Ionicons } from '@expo/vector-icons';
 
-const API_BASE_URL = 'http://localhost:8000'; // Update this with your actual backend URL
-
-const PromptScreen = () => {
+export default function AnswerPrompt() {
   const [response, setResponse] = useState('');
-  const [prompt, setPrompt] = useState('');
-  const [isLoading, setIsLoading] = useState(true);
-  const [isSubmitting, setIsSubmitting] = useState(false);
+  const router = useRouter();
+  
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
 
-  useEffect(() => {
-    fetchDailyPrompt();
-  }, []);
-
-  const fetchDailyPrompt = async () => {
-    try {
-      setIsLoading(true);
-      const apiResponse = await fetch(`${API_BASE_URL}/today-prompt`);
-      const data = await apiResponse.json();
-      setPrompt(data.prompt);
-    } catch (error) {
-      Alert.alert('Error', 'Failed to fetch today\'s prompt');
-      console.error('Error fetching prompt:', error);
-    } finally {
-      setIsLoading(false);
-    }
+  const handleSubmit = () => {
+    console.log('Submitted response:', response);
+    // You can add code to post this to your database
+    router.back(); // go back to previous page after submit
   };
 
-  const handleSubmit = async () => {
-    if (!response.trim()) {
-      Alert.alert('Error', 'Please enter your response');
-      return;
-    }
-
-    try {
-      setIsSubmitting(true);
-      const apiResponse = await fetch(`${API_BASE_URL}/submit-response`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ response: response }),
-      });
-
-      if (!apiResponse.ok) {
-        throw new Error('Failed to submit response');
-      }
-
-      Alert.alert('Success', 'Your response has been submitted');
-      setResponse('');
-    } catch (error) {
-      Alert.alert('Error', 'Failed to submit response');
-      console.error('Error submitting response:', error);
-    } finally {
-      setIsSubmitting(false);
-    }
+  const handleClose = () => {
+    router.back(); // just go back
   };
-
-  const today = new Date().toLocaleDateString('en-US', {
-    weekday: 'long',
-    year: 'numeric',
-    month: 'long',
-    day: 'numeric',
-  });
-
-  const Container = Platform.OS === 'web' ? View : SafeAreaView;
-
-  if (isLoading) {
-    return (
-      <Container style={styles.container}>
-        <View style={styles.loadingContainer}>
-          <ActivityIndicator size="large" color="#E4E4E4" />
-        </View>
-      </Container>
-    );
-  }
 
   return (
-    <Container style={styles.container}>
-      <View style={styles.content}>
-        <Text style={styles.title}>Sonder</Text>
-        <Text style={styles.date}>{today}</Text>
-        <Text style={styles.prompt}>{prompt}</Text>
-        
-        <TextInput
-          style={styles.input}
-          multiline
-          placeholder="Type your thoughts here..."
-          placeholderTextColor="#888"
-          value={response}
-          onChangeText={setResponse}
-        />
+    <View style={styles.container}>
+      {/* Top Header */}
+      <View style={styles.header}>
+  <TouchableOpacity style={styles.closeButton} onPress={handleClose}>
+    <Ionicons name="close" size={28} color="#ffffff" />
+  </TouchableOpacity>
 
-        <TouchableOpacity
-          style={[styles.button, isSubmitting && styles.buttonDisabled]}
-          onPress={handleSubmit}
-          disabled={isSubmitting}
-        >
-          {isSubmitting ? (
-            <ActivityIndicator color="#fff" />
-          ) : (
-            <Text style={styles.buttonText}>Submit</Text>
-          )}
-        </TouchableOpacity>
-      </View>
-    </Container>
+  <Text style={styles.title}>sonder</Text>
+</View>
+
+
+      {/* Date */}
+      <Text style={styles.dateText}>{formattedDate}</Text>
+
+      {/* Prompt */}
+      <Text style={styles.prompt}>what’s on your mind?</Text>
+
+      {/* Text input box */}
+      <TextInput
+        style={styles.textArea}
+        placeholder="type your response..."
+        placeholderTextColor="#ccc"
+        multiline
+        value={response}
+        onChangeText={setResponse}
+      />
+
+      {/* Submit button */}
+      <TouchableOpacity style={styles.submitButton} onPress={handleSubmit}>
+        <Text style={styles.submitButtonText}>submit</Text>
+      </TouchableOpacity>
+    </View>
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: 'black',
-    ...(Platform.OS === 'web' && {
-      maxWidth: 800,
-      marginHorizontal: 'auto',
-      width: '100%',
-    }),
+    backgroundColor: '#000000',
+    padding: 24,
+    paddingTop: 48,
   },
-  content: {
-    flex: 1,
-    padding: 20,
+  header: {
+    marginBottom: 24,
+    position: 'relative',
     alignItems: 'center',
-    justifyContent: 'center',
-    ...(Platform.OS === 'web' && {
-      maxWidth: 600,
-      marginHorizontal: 'auto',
-    }),
   },
   title: {
-    fontSize: 42,
-    fontWeight: 'bold',
-    color: '#E4E4E4',
-    marginBottom: 40,
-    letterSpacing: 2,
+    fontFamily: 'JosefinSans-Bold',
+    fontSize: 32,
+    color: '#ffffff',
+    fontWeight: '700',
+    textAlign: 'center',
   },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+  closeButton: {
+    position: 'absolute',
+    right: 0,
+    top: 0,
   },
-  date: {
+  
+  dateText: {
+    fontFamily: 'JosefinSans-Regular',
     fontSize: 18,
-    color: '#888',
-    marginBottom: 20,
+    color: '#6F31EC',
+    textAlign: 'center',
+    marginBottom: 24,
   },
   prompt: {
+    fontFamily: 'JosefinSans-Bold',
     fontSize: 24,
-    fontWeight: 'bold',
+    color: '#ffffff',
     textAlign: 'center',
-    marginBottom: 30,
-    color: '#E4E4E4',
-    lineHeight: 32,
+    marginBottom: 24,
   },
-  input: {
-    width: '100%',
-    minHeight: 150,
+  textArea: {
     borderWidth: 1,
-    borderColor: '#333',
-    borderRadius: 10,
-    padding: 15,
+    borderColor: '#ffffff',
+    borderRadius: 20,
+    padding: 16,
+    fontFamily: 'JosefinSans-Regular',
     fontSize: 16,
-    marginBottom: 20,
-    textAlignVertical: 'top',
-    backgroundColor: '#222',
-    color: '#E4E4E4',
-    ...(Platform.OS === 'web' && {
-      resize: 'vertical',
-      outline: 'none',
-    }),
+    color: '#ffffff',
+    height: 200,
+    textAlignVertical: 'top', // ensure text starts at top
+    marginBottom: 24,
   },
-  button: {
-    backgroundColor: '#4A90E2',
-    paddingVertical: 12,
-    paddingHorizontal: 30,
+  submitButton: {
+    borderWidth: 1,
+    borderColor: '#ffffff',
     borderRadius: 25,
-    ...(Platform.OS === 'web' && {
-      cursor: 'pointer',
-    }),
+    paddingVertical: 12,
+    alignItems: 'center',
+    width: '70%',
+    alignSelf: 'center',
   },
-  buttonDisabled: {
-    backgroundColor: '#333',
-  },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: '600',
+  submitButtonText: {
+    color: '#ffffff',
+    fontFamily: 'JosefinSans-Regular',
+    fontSize: 20,
+    textTransform: 'lowercase',
   },
 });
-
-export default PromptScreen; 
