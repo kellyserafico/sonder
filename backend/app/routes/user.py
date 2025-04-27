@@ -144,7 +144,7 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
 @router.get("/search/username/{username}", response_model=List[schemas.UserResponse])
 def search_user(username: str, db: Session = Depends(get_db)):
     db_user = db.query(models.User).filter(models.User.username.ilike(f"%{username}%")).all()
-    if db_user is None:
+    if not db_user:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail = "User not found"
