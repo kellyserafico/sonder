@@ -2,7 +2,7 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 # Import your routers here
-from .routes import user, prompt, auth, response, comment  # Add other routes as you implement them
+from .routes import user, prompt, auth, response, comment, password  # Add other routes as you implement them
 
 
 app = FastAPI(title="Sonder API")
@@ -24,6 +24,7 @@ app.include_router(response.router)
 app.include_router(comment.router)
 # app.include_router(notifications.router)
 app.include_router(auth.router)
+app.include_router(password.router)
 
 @app.get("/")
 def read_root():
