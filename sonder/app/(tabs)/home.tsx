@@ -103,12 +103,17 @@ export default function FeedScreen() {
       <SafeAreaView style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-          <Text style={styles.title}>sonder</Text>
-          <Image
-            source={{ uri: "https://via.placeholder.com/80" }}
-            style={styles.profilePic}
-          />
-        </View>
+  <Text style={styles.title}>sonder</Text>
+
+  <TouchableOpacity style={styles.profileButton}>
+    <Image
+      source={{ uri: "https://via.placeholder.com/80" }}
+      style={styles.profilePic}
+    />
+  </TouchableOpacity>
+</View>
+
+
 
         {/* Prompt */}
         <TouchableOpacity>
@@ -174,24 +179,33 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
   },
   header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    paddingHorizontal: 16,
-    marginTop: 8,
+    position: 'relative',
+    alignItems: 'center',   // center title horizontally
+    justifyContent: 'center',
+    paddingTop: 8,
+    paddingBottom: 8,
   },
   title: {
-    fontFamily: "JosefinSans-Bold",
+    fontFamily: 'JosefinSans-Bold',
     fontSize: 32,
-    color: "#ffffff",
-    fontWeight: "700",
+    color: '#ffffff',
+    fontWeight: '700',
+    textAlign: 'center',
+  },
+  profileButton: {
+    position: 'absolute',
+    right: 16,         // 16px from right edge
+    top: '50%',
+    transform: [{ translateY: -20 }],  // center vertically (since image is 40x40)
   },
   profilePic: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: "#ccc",
+    backgroundColor: '#ccc',
   },
+  
+  
   prompt: {
     textAlign: "center",
     color: "#ffffff",
