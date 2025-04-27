@@ -102,31 +102,31 @@ const styles = StyleSheet.create({
     fontFamily: 'JosefinSans-Bold',
     fontSize: 16,
     color: '#ffffff',
-    marginBottom: 4,
+    marginBottom: 10, // Increased from 4
   },
   postText: {
     fontFamily: 'JosefinSans-Regular',
     fontSize: 14,
     color: '#ffffff',
-    marginBottom: 8,
+    marginBottom: 12, // Increased from 8
   },
   postImage: {
     width: '100%',
     height: 200,
     borderRadius: 12,
     backgroundColor: '#444',
-    marginTop: 8,
-    marginBottom: 8,
+    marginTop: 12, // Increased from 8
+    marginBottom: 12,
   },
   dateText: {
     color: '#aaaaaa',
     fontSize: 12,
-    marginTop: 4,
+    marginTop: 4, // Increased from 4
   },
   actions: {
     flexDirection: 'row',
     gap: 12,
-    marginTop: 8,
+    marginTop: 12, // Increased from 8
     alignItems: 'center',
   },
   iconButton: {
