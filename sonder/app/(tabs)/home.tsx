@@ -9,12 +9,11 @@ import {
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState, useEffect } from "react";
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import Post from "../../components/feed/Post";
 import { Link } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
 
 interface Prompt {
   id: number;
@@ -45,11 +44,11 @@ export default function FeedScreen() {
   useEffect(() => {
     async function fetchTasks() {
       try {
-        const value = await AsyncStorage.getItem('userId');
-        setStoredTasks(value); 
-        console.log("ASYNC:", value)
+        const value = await AsyncStorage.getItem("userId");
+        setStoredTasks(value);
+        console.log("ASYNC:", value);
       } catch (error) {
-        console.error('Error retrieving tasks from AsyncStorage', error);
+        console.error("Error retrieving tasks from AsyncStorage", error);
       }
     }
 
@@ -114,7 +113,6 @@ export default function FeedScreen() {
     getAllResponses();
   }, [prompt]);
 
-
   return (
     <SafeAreaProvider>
       <SafeAreaView style={styles.container}>
@@ -165,6 +163,7 @@ export default function FeedScreen() {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <Post
+              responseId={item.id}
               username={item.username || `user_${item.user_id}`}
               text={item.content}
               likes={item.likes}
@@ -176,10 +175,10 @@ export default function FeedScreen() {
 
         {/* Floating Add Button */}
         <TouchableOpacity style={styles.floatingButton}>
-  <Link href="/answerprompt">
-    <Ionicons name="add" size={32} color="white" />
-  </Link>
-</TouchableOpacity>
+          <Link href="/answerprompt">
+            <Ionicons name="add" size={32} color="white" />
+          </Link>
+        </TouchableOpacity>
       </SafeAreaView>
     </SafeAreaProvider>
   );
@@ -213,7 +212,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "#ffffff",
     fontSize: 24,
-    fontFamily: "JosefinSans-SemiBold", 
+    fontFamily: "JosefinSans-SemiBold",
     marginVertical: 24,
     paddingHorizontal: 16,
     borderBottomWidth: 1,

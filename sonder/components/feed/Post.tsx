@@ -3,6 +3,7 @@ import { Feather } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 
 interface PostProps {
+  responseId: number
   username: string;
   text: string;
   postImage?: string | null; // external URL or null
@@ -10,7 +11,7 @@ interface PostProps {
   likes: number;
 }
 
-export default function Post({ username, text, postImage, date, likes }: PostProps) {
+export default function Post({ responseId, username, text, postImage, date, likes }: PostProps) {
   const router = useRouter();
 
   const handleProfilePress = () => {
@@ -28,7 +29,8 @@ export default function Post({ username, text, postImage, date, likes }: PostPro
         text,
         date,
         likes,
-        comments: 2, // you can expand later
+        comments: 2,
+        response_id: responseId,
       },
     });
   };
@@ -72,7 +74,7 @@ export default function Post({ username, text, postImage, date, likes }: PostPro
           </TouchableOpacity>
           <TouchableOpacity style={styles.iconButton}>
             <Feather name="message-circle" size={20} color="#ffffff" />
-            <Text style={styles.actionText}>2</Text>
+            <Text style={styles.actionText}>!</Text>
           </TouchableOpacity>
         </View>
       </TouchableOpacity>
