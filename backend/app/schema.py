@@ -1,5 +1,5 @@
 from pydantic import BaseModel, EmailStr
-from typing import List, Optional
+from typing import List, Optional, Dict
 from datetime import datetime
 
 # User schemas
@@ -34,13 +34,14 @@ class PromptResponse(PromptBase):
     
     class Config:
         orm_mode = True
-
-# Response schemas
+        
 class ResponseBase(BaseModel):
     content: str
+    image: str = None 
 
 class ResponseCreate(ResponseBase):
     prompt_id: int
+    anonymous: bool
 
 class ResponseResponse(ResponseBase):
     id: int
@@ -49,6 +50,7 @@ class ResponseResponse(ResponseBase):
     
     class Config:
         orm_mode = True
+
 
 # Comment schemas
 class CommentBase(BaseModel):
@@ -85,3 +87,17 @@ class NotificationResponse(NotificationBase):
     
     class Config:
         orm_mode = True
+
+class UserLogin(BaseModel):
+    username: str  # This can be either username or email
+    password: str
+
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+class TokenWithUser(Token):
+    user: UserResponse
+
+class TokenData(BaseModel):
+    username: Optional[str] = None

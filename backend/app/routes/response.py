@@ -13,128 +13,107 @@ router = APIRouter(
 )
 
 # Create response
-@router.post("/", response_model=schemas.ResponseResponse, status_code=status.HTTP_201_CREATED)
-def create_response(user: schemas.ResponseCreate, db: Session = Depends(get_db)):
-    # Check if user with this username or email already exists
+@router.post("/{user_id}", response_model=schemas.ResponseResponse, status_code=status.HTTP_201_CREATED)
+def create_response(response: schemas.ResponseCreate, user_id: int, db: Session = Depends(get_db)):
+    # Check if the user has already responded to this prompt
     existing_response = db.query(models.Response).filter(
-        (models.Response.username == user.username) | (models.User.email == user.email)
+        (models.Response.prompt_id == response.prompt_id) & 
+        (models.Response.user_id == user_id) 
     ).first()
     
-    if existing_user:
+    if existing_response:
         raise HTTPException(
             status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username or email already registered"
+            detail="User has already responded to this prompt."
         )
-    salt = os.urandom(32) 
-    password_bytes = user.password.encode()
     
-    hashed_password = hashlib.pbkdf2_hmac(
-        'sha256',
-        password_bytes,
-        salt,
-        100
+    # Create the new response
+    new_response = models.Response(
+        prompt_id=response.prompt_id,
+        user_id=user_id,
+        content=response.content,
+        anonymous=response.anonymous,
+        image=response.image if response.image else ""
+
     )
 
-    stored_password = salt.hex() + ':' + hashed_password.hex()
-    
-    db_user = models.User(
-        username=user.username,
-        email=user.email,
-        password=stored_password
-    )
-    
-    db.add(db_user)
+    db.add(new_response)
     db.commit()
-    db.refresh(db_user)
+    db.refresh(new_response)
 
-    return db_user
+    return new_response
 
-# Read all users
-@router.get("/", response_model=List[schemas.UserResponse])
-def read_users(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
-    users = db.query(models.User).offset(skip).limit(limit).all()
-    return users
+# Read all responses from a user
+@router.get("/{user_id}", response_model=List[schemas.ResponseResponse])
+def read_responses(user_id: int, skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+    responses = db.query(models.Response).filter(models.Response.user_id == user_id).offset(skip).limit(limit).all()
+    return responses
 
-# Read user by ID
-@router.get("/{user_id}", response_model=schemas.UserResponse)
-def read_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if db_user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
-    return db_user
 
-# Update user
-@router.put("/{user_id}", response_model=schemas.UserResponse)
-def update_user(user_id: int, user: schemas.UserBase, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if db_user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
-    
-    # Check if updating to an existing username or email
-    existing_user = db.query(models.User).filter(
-        ((models.User.username == user.username) | (models.User.email == user.email)) &
-        (models.User.id != user_id)
+# Update user's response
+@router.put("/{user_id}/{prompt_id}", response_model=List[schemas.ResponseResponse])
+def update_response(user_id: int, prompt_id: int, response: schemas.ResponseCreate, db: Session = Depends(get_db)):
+    # Check if the user has already responded to this prompt
+    existing_response = db.query(models.Response).filter(
+        (models.Response.prompt_id == prompt_id) & 
+        (models.Response.user_id == user_id) 
     ).first()
     
-    if existing_user:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="Username or email already exists"
-        )
-    
-    # Update user fields
-    db_user.username = user.username
-    db_user.email = user.email
-    
-    db.commit()
-    db.refresh(db_user)
-    return db_user
-
-# Update user password
-@router.put("/forgot/{user_id}", response_model=schemas.UserResponse)
-def reset_password(user_id: int, password_data: schemas.PasswordReset, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if db_user is None:
+    if not existing_response:
         raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
+            detail="Response not found."
         )
     
-    salt = os.urandom(32) 
-    password_bytes = password_data.new_password.encode()
-    
-    hashed_password = hashlib.pbkdf2_hmac(
-        'sha256',
-        password_bytes,
-        salt,
-        100
-    )
+    # Update the response content
+    existing_response.content = response.content
+    existing_response.anonymous = response.anonymous
+    existing_response.image = response.image if response.image else existing_response.image
 
-    stored_password = salt.hex() + ':' + hashed_password.hex()
-    
-    # Update password
-    db_user.password = stored_password
-    
     db.commit()
-    db.refresh(db_user)
-    return db_user
+    db.refresh(existing_response)
 
-# Delete user
-@router.delete("/{user_id}")
-def delete_user(user_id: int, db: Session = Depends(get_db)):
-    db_user = db.query(models.User).filter(models.User.id == user_id).first()
-    if db_user is None:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail="User not found"
-        )
+    return [existing_response]
+
+# # Update user password
+# @router.put("/forgot/{user_id}", response_model=schemas.UserResponse)
+# def reset_password(user_id: int, password_data: schemas.PasswordReset, db: Session = Depends(get_db)):
+#     db_user = db.query(models.User).filter(models.User.id == user_id).first()
+#     if db_user is None:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail="User not found"
+#         )
     
-    db.delete(db_user)
-    db.commit()
-    return {"message":"Deleted User"}
+#     salt = os.urandom(32) 
+#     password_bytes = password_data.new_password.encode()
+    
+#     hashed_password = hashlib.pbkdf2_hmac(
+#         'sha256',
+#         password_bytes,
+#         salt,
+#         100
+#     )
+
+#     stored_password = salt.hex() + ':' + hashed_password.hex()
+    
+#     # Update password
+#     db_user.password = stored_password
+    
+#     db.commit()
+#     db.refresh(db_user)
+#     return db_user
+
+# # Delete user
+# @router.delete("/{user_id}")
+# def delete_user(user_id: int, db: Session = Depends(get_db)):
+#     db_user = db.query(models.User).filter(models.User.id == user_id).first()
+#     if db_user is None:
+#         raise HTTPException(
+#             status_code=status.HTTP_404_NOT_FOUND,
+#             detail="User not found"
+#         )
+    
+#     db.delete(db_user)
+#     db.commit()
+#     return {"message":"Deleted User"}
