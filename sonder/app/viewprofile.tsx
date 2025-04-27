@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router'; // or use useRoute() if you're using react-navigation
-import Post from '../../components/feed/Post'; // Adjust the import path as necessary
+import Post from '../components/feed/Post'; // Adjust the import path as necessary
 export default function ViewProfile() {
   const [isFollowing, setIsFollowing] = useState(false);
 
