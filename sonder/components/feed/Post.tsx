@@ -1,5 +1,6 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
-import { Feather } from '@expo/vector-icons'; // for heart and comment icons
+import { Feather } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 interface PostProps {
   username: string;
@@ -7,13 +8,28 @@ interface PostProps {
 }
 
 export default function Post({ username, text }: PostProps) {
+  const router = useRouter();
+
+  const handleProfilePress = () => {
+    console.log('Profile pic clicked!'); 
+    router.push({
+      pathname: '/viewprofile',
+      params: { username },
+    });
+  };
+
   return (
     <View style={styles.container}>
-      <Image
-        source={{ uri: 'https://via.placeholder.com/80' }} // Placeholder profile image
-        style={styles.profilePic}
-      />
-      
+ <TouchableOpacity
+  onPress={handleProfilePress}
+  style={{ backgroundColor: 'red', borderRadius: 25 }}
+  hitSlop={20}
+>
+  <Image
+    source={require('../../assets/images/icon.png')}
+    style={styles.profilePic}
+  />
+</TouchableOpacity>
       <View style={styles.content}>
         <Text style={styles.username}>@{username}</Text>
         <Text style={styles.postText}>{text}</Text>
@@ -39,8 +55,8 @@ const styles = StyleSheet.create({
   profilePic: {
     width: 50,
     height: 50,
-    borderRadius: 25, // Circle
-    backgroundColor: '#ccc', // Light gray background if no image
+    borderRadius: 25,
+    backgroundColor: '#ccc',
     marginRight: 12,
   },
   content: {
