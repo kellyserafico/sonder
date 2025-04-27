@@ -63,7 +63,7 @@ class CommentBase(BaseModel):
     content: str
 
 class CommentCreate(CommentBase):
-    response_id: int
+    user_id: int
 
 class CommentResponse(CommentBase):
     id: int
