@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'rea
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
 import { useLocalSearchParams } from 'expo-router'; // or use useRoute() if you're using react-navigation
-
+import Post from '../../components/feed/Post'; // Adjust the import path as necessary
 export default function ViewProfile() {
   const [isFollowing, setIsFollowing] = useState(false);
 
@@ -36,36 +36,14 @@ export default function ViewProfile() {
         <View style={{ gap: 20, marginTop: 20 }}>
           {/* Example posts */}
           <Post username={username} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-          <Post username={username} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." hasImage />
+          <Post username={username} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."  />
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
 
-function Post({ username, text, hasImage }: { username: string; text: string; hasImage?: boolean }) {
-  return (
-    <View style={styles.postContainer}>
-      <Image
-        source={{ uri: 'https://via.placeholder.com/50' }}
-        style={styles.postProfilePic}
-      />
-      <View style={styles.postContent}>
-        <Text style={styles.postUsername}>@{username}</Text>
-        <Text style={styles.postText}>{text}</Text>
-        {hasImage && <View style={styles.imagePlaceholder} />}
-        <View style={styles.actions}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Text style={styles.icon}>♡</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Text style={styles.icon}>💬</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-}
+
 
 const styles = StyleSheet.create({
   container: {

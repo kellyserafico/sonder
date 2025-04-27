@@ -2,7 +2,8 @@ import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useState } from 'react';
-import { Ionicons } from '@expo/vector-icons'; // Only Ionicons now
+import { Ionicons } from '@expo/vector-icons';
+import Post from "../../components/feed/Post"
 
 const posts = [
   { id: '1', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
@@ -63,29 +64,6 @@ export default function FeedScreen() {
   );
 }
 
-function Post({ username, text }: { username: string; text: string }) {
-  return (
-    <View style={styles.postContainer}>
-      <Image
-        source={{ uri: 'https://via.placeholder.com/80' }}
-        style={styles.postProfilePic}
-      />
-      <View style={styles.postContent}>
-        <Text style={styles.username}>@{username}</Text>
-        <Text style={styles.postText}>{text}</Text>
-        <View style={styles.actions}>
-          <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="heart-outline" size={20} color="#ffffff" />
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.iconButton}>
-            <Ionicons name="chatbubble-outline" size={20} color="#ffffff" />
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-}
-
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -134,40 +112,6 @@ const styles = StyleSheet.create({
   activeTab: {
     borderBottomWidth: 2,
     borderBottomColor: '#C084FC',
-  },
-  postContainer: {
-    flexDirection: 'row',
-    marginVertical: 12,
-    alignItems: 'flex-start',
-  },
-  postProfilePic: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-    backgroundColor: '#ccc',
-    marginRight: 12,
-  },
-  postContent: {
-    flex: 1,
-  },
-  username: {
-    fontFamily: 'JosefinSans-Bold',
-    fontSize: 16,
-    color: '#ffffff',
-    marginBottom: 4,
-  },
-  postText: {
-    fontFamily: 'JosefinSans-Regular',
-    fontSize: 14,
-    color: '#ffffff',
-    marginBottom: 8,
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 12,
-  },
-  iconButton: {
-    padding: 4,
   },
   floatingButton: {
     position: 'absolute',

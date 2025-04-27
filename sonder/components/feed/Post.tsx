@@ -22,7 +22,7 @@ export default function Post({ username, text }: PostProps) {
     <View style={styles.container}>
  <TouchableOpacity
   onPress={handleProfilePress}
-  style={{ backgroundColor: 'red', borderRadius: 25 }}
+  style={{ backgroundColor: '', borderRadius: 25 }}
   hitSlop={20}
 >
   <Image
