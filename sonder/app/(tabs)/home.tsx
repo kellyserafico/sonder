@@ -149,7 +149,7 @@ export default function FeedScreen() {
               date={new Date().toISOString()}
             />
           )}
-          contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 8 }}
+          contentContainerStyle={{ paddingHorizontal: 16, paddingTop: 12 }}
         />
 
         {/* Floating Add Button */}

@@ -44,7 +44,7 @@ export default function Post({ responseId, username, text, postImage, date, like
         hitSlop={20}
       >
         <Image
-          source={require('../../assets/images/icon.png')}
+          source={require('../../assets/images/sonder_icon2.png')}
           style={styles.profilePic}
         />
       </TouchableOpacity>

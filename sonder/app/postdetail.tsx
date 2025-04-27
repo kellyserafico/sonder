@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   title: {
     color: "#fff",
     fontFamily: "JosefinSans-Bold",
-    fontSize: 24,
+    fontSize: 28, // Increased from 24
     marginLeft: 16,
   },
   postContainer: { flexDirection: "row", paddingHorizontal: 16 },
@@ -155,33 +155,48 @@ const styles = StyleSheet.create({
     backgroundColor: "#ccc",
   },
   postContent: { flex: 1 },
-  username: { color: "#fff", fontFamily: "JosefinSans-Bold", fontSize: 16 },
-  postText: { color: "#fff", fontFamily: "JosefinSans-Regular", marginTop: 4 },
+  username: { 
+    color: "#fff", 
+    fontFamily: "JosefinSans-Bold", 
+    fontSize: 18 // Increased from 16
+  },
+  postText: { 
+    color: "#fff", 
+    fontFamily: "JosefinSans-Regular", 
+    marginTop: 4,
+    fontSize: 16 // Added font size
+  },
   dateText: {
     color: "#aaa",
     fontFamily: "JosefinSans-Regular",
     marginTop: 8,
-    fontSize: 12,
+    fontSize: 14 // Increased from 12
   },
   actions: { flexDirection: "row", alignItems: "center", marginTop: 8 },
   actionText: {
     color: "#fff",
     marginLeft: 4,
     fontFamily: "JosefinSans-Regular",
+    fontSize: 16 // Added font size
   },
   divider: { height: 2, backgroundColor: "#C084FC", marginVertical: 12 },
-  commentContainer: { flexDirection: "row", marginBottom: 16 },
+  commentContainer: { 
+    flexDirection: "row", 
+    marginBottom: 16, 
+    paddingVertical: 12 
+  },
   commentPic: {
     width: 40,
     height: 40,
     borderRadius: 20,
     backgroundColor: "#ccc",
-    marginRight: 12,
+    marginRight: 16,
   },
   commentText: {
     color: "#fff",
     fontFamily: "JosefinSans-Regular",
     marginTop: 2,
+    fontSize: 16,
   },
   commentInputContainer: {
     padding: 12,
@@ -197,4 +212,4 @@ const styles = StyleSheet.create({
     color: "#fff",
     height: 40,
   },
-});
+ });

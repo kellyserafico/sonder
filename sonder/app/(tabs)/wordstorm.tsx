@@ -5,8 +5,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 const WINDOW = Dimensions.get('window');
 const LAYOUT = {
-  maxFontSize: Platform.OS === 'web' ? 48 : 16, // Smaller for mobile
-  minFontSize: Platform.OS === 'web' ? 18 : 8, // Much smaller for mobile
+  maxFontSize: Platform.OS === 'web' ? 48 : 16,
+  minFontSize: Platform.OS === 'web' ? 18 : 8,
   wordSpacing: 15,
   colorVariations: [
     '#8A4FFF', '#9966FF', '#A67CFF', '#B38EFF', 
@@ -93,13 +93,11 @@ export default function WordStorm() {
     const screenWidth = WINDOW.width;
     const screenHeight = WINDOW.height;
 
-    // More sophisticated overlap prevention grid
-    const gridResolution = Platform.OS === 'web' ? 20 : 30; // Larger grid for mobile to reduce overlap
+    const gridResolution = Platform.OS === 'web' ? 20 : 30;
     const grid = new Array(Math.ceil(screenHeight / gridResolution))
       .fill(null)
       .map(() => new Array(Math.ceil(screenWidth / gridResolution)).fill(false));
 
-    // Check if an area is available in the grid
     const isAreaAvailable = (x, y, width, height) => {
       const startX = Math.max(0, Math.floor(x / gridResolution));
       const startY = Math.max(0, Math.floor(y / gridResolution));
@@ -114,7 +112,6 @@ export default function WordStorm() {
       return true;
     };
 
-    // Mark an area as occupied in the grid
     const markAreaOccupied = (x, y, width, height) => {
       const startX = Math.max(0, Math.floor(x / gridResolution));
       const startY = Math.max(0, Math.floor(y / gridResolution));
@@ -128,19 +125,15 @@ export default function WordStorm() {
       }
     };
 
-    // Sort words by count in descending order
     const sortedWords = [...wordList].sort((a, b) => b.count - a.count);
     const successfulPlacements = [];
 
     sortedWords.forEach(item => {
-      // Calculate font size proportionally
       const fontSize = ((item.count / maxCount) * (LAYOUT.maxFontSize - LAYOUT.minFontSize)) + LAYOUT.minFontSize;
       
-      // Estimate word dimensions more conservatively
       const estimatedWidth = fontSize * item.word.length * 0.6;
       const estimatedHeight = fontSize * 1.1;
 
-      // Multiple placement attempts with controlled spread
       let placed = false;
       for (let spread = 1; spread <= 5 && !placed; spread++) {
         for (let attempt = 0; attempt < 50; attempt++) {
@@ -151,7 +144,6 @@ export default function WordStorm() {
                screenHeight * Math.random()))
           };
 
-          // Check for overlap using grid system
           if (isAreaAvailable(position.x, position.y, estimatedWidth, estimatedHeight)) {
             markAreaOccupied(position.x, position.y, estimatedWidth, estimatedHeight);
             successfulPlacements.push({ item, position, fontSize });
@@ -161,7 +153,6 @@ export default function WordStorm() {
         }
       }
 
-      // Fallback: force placement if no good spot found
       if (!placed) {
         const position = {
           x: Math.random() * (screenWidth - estimatedWidth),
@@ -197,7 +188,7 @@ export default function WordStorm() {
 
       const translateY = Animated.multiply(
         floatingAnimation,
-        new Animated.Value((isEmoji ? 5 : 3) * (Math.random() * 2 - 1)) // Reduced float range
+        new Animated.Value((isEmoji ? 5 : 3) * (Math.random() * 2 - 1))
       );
 
       return (
@@ -213,11 +204,11 @@ export default function WordStorm() {
               { translateY },
               { rotate: isEmoji ? '0deg' : `${rotation}deg` }
             ],
-            shadowColor: '#fff',
+            shadowColor: 'transparent',
             shadowOffset: { width: 0, height: 0 },
-            shadowRadius: isEmoji ? 5 : 2, // Reduced shadow
-            shadowOpacity: isEmoji ? 0.15 : 0.1,
-            elevation: 2,
+            shadowRadius: 0,
+            shadowOpacity: 0,
+            elevation: 0,
             maxWidth: screenWidth * 0.9,
           }}
         >
@@ -230,7 +221,7 @@ export default function WordStorm() {
               fontWeight: item.count > 7 ? 'bold' : '500',
               textAlign: 'center',
               fontFamily: 'System',
-              letterSpacing: 0.2, // Slightly reduced letter spacing
+              letterSpacing: 0.2,
               maxWidth: '100%',
             }}
           >
