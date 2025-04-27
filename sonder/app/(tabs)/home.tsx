@@ -33,22 +33,21 @@ export default function FeedScreen() {
   const [selectedTab, setSelectedTab] = useState("trending")
   const [prompt, setPrompt] = useState<Prompt | null>(null)
   const [responses, setResponses] = useState<Response[]>([])
-  const [storedTasks, setStoredTasks] = useState<string | null>(null)
 
-  // Fetch AsyncStorage data
-  useEffect(() => {
-    async function fetchTasks() {
-      try {
-        const value = await AsyncStorage.getItem("userId")
-        setStoredTasks(value)
-        console.log("ASYNC:", value)
-      } catch (error) {
-        console.error("Error retrieving tasks from AsyncStorage", error)
-      }
-    }
+  // // Fetch AsyncStorage data
+  // useEffect(() => {
+  //   async function fetchTasks() {
+  //     try {
+  //       const value = await AsyncStorage.getItem("userId")
+  //       setStoredTasks(value)
+  //       console.log("ASYNC:", value)
+  //     } catch (error) {
+  //       console.error("Error retrieving tasks from AsyncStorage", error)
+  //     }
+  //   }
 
-    fetchTasks()
-  }, [])
+  //   fetchTasks()
+  // }, [])
 
   //get the prompts
   useEffect(() => {
@@ -131,9 +130,9 @@ export default function FeedScreen() {
             <Text style={[styles.tabText, selectedTab === "trending" && styles.activeTab]}>trending</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => setSelectedTab("following")}>
+          {/* <TouchableOpacity onPress={() => setSelectedTab("following")}>
             <Text style={[styles.tabText, selectedTab === "following" && styles.activeTab]}>following</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
         </View>
 
         {/* Post List */}

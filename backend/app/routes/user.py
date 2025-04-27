@@ -139,3 +139,13 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     db.delete(db_user)
     db.commit()
     return {"message":"Deleted User"}
+
+@router.get("/username/{username}", response_model=schemas.UserResponse)
+def read_user_by_username(username: str, db: Session = Depends(get_db)):
+    db_user = db.query(models.User).filter(models.User.username == username).first()
+    if db_user is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="User not found"
+        )
+    return db_user

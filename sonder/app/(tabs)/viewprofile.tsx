@@ -1,14 +1,64 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useState } from 'react';
-import { useLocalSearchParams } from 'expo-router'; // or use useRoute() if you're using react-navigation
-import Post from '../components/feed/Post'; // Adjust the import path as necessary
+import { useState, useEffect } from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import Post from '../../components/feed/Post';
+
+export interface User {
+  username: string;
+  email: string;
+  id: number;
+  password: string;
+}
+
+export interface Response {
+  content: string;
+  image: string | null;
+  id: number;
+  user_id: number;
+  prompt_id: number;
+  likes: number;
+}
+
 export default function ViewProfile() {
   const [isFollowing, setIsFollowing] = useState(false);
+  const [user, setUser] = useState<User>({
+    username: 'username',
+    email: '',
+    id: 0,
+    password: ''
+  });
+  const [responses, setResponses] = useState<Response[]>([]);
 
   // If you passed params (username, etc.)
   const { username: rawUsername = 'username' } = useLocalSearchParams();
   const username = Array.isArray(rawUsername) ? rawUsername[0] : rawUsername;
+
+
+  useEffect(() => {
+    async function fetchUserData() {
+      try {
+        // Fetch user data
+        const res = await fetch(`http://localhost:8000/user/username/${username}`)
+        const userData: User = await res.json()
+        console.log(userData)
+        setUser(userData)
+
+        // Fetch user's responses
+        const responsesRes = await fetch(`http://localhost:8000/response/${userData.id}`)
+        const responsesData = await responsesRes.json()
+        
+        const responsesArray = Array.isArray(responsesData) ? responsesData : []
+        console.log(responsesArray)
+        setResponses(responsesArray)
+        
+      } catch (error) {
+        console.error("Failed to fetch user data:", error)
+      }
+    }
+
+    fetchUserData()
+  }, [username])
 
   return (
     <SafeAreaView style={styles.container}>
@@ -21,7 +71,7 @@ export default function ViewProfile() {
             source={{ uri: 'https://via.placeholder.com/120' }}
             style={styles.profileImage}
           />
-          <Text style={styles.username}>@{username}</Text>
+          <Text style={styles.username}>@{user.username}</Text>
           <TouchableOpacity
             style={[styles.followButton, isFollowing && styles.followingButton]}
             onPress={() => setIsFollowing(!isFollowing)}
@@ -34,16 +84,22 @@ export default function ViewProfile() {
 
         {/* Posts */}
         <View style={{ gap: 20, marginTop: 20 }}>
-          {/* Example posts */}
-          <Post username={username} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." />
-          <Post username={username} text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."  />
+          {responses.map((response) => (
+            <Post 
+              key={response.id} 
+              responseId={response.id}
+              username={user.username} 
+              text={response.content} 
+              postImage={response.image}
+              date={new Date().toISOString()}
+              likes={response.likes}
+            />
+          ))}
         </View>
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-
 
 const styles = StyleSheet.create({
   container: {
@@ -95,50 +151,5 @@ const styles = StyleSheet.create({
   },
   followingButtonText: {
     color: '#ffffff',
-  },
-  postContainer: {
-    flexDirection: 'row',
-    marginBottom: 24,
-  },
-  postProfilePic: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
-    backgroundColor: '#ccc',
-    marginRight: 12,
-    marginTop: 6,
-  },
-  postContent: {
-    flex: 1,
-  },
-  postUsername: {
-    fontFamily: 'JosefinSans-Bold',
-    fontSize: 16,
-    color: '#ffffff',
-    marginBottom: 4,
-  },
-  postText: {
-    fontFamily: 'JosefinSans-Regular',
-    fontSize: 14,
-    color: '#ffffff',
-    marginBottom: 8,
-  },
-  imagePlaceholder: {
-    backgroundColor: '#ccc',
-    height: 120,
-    borderRadius: 16,
-    marginVertical: 8,
-  },
-  actions: {
-    flexDirection: 'row',
-    gap: 12,
-    marginTop: 8,
-  },
-  iconButton: {
-    padding: 4,
-  },
-  icon: {
-    color: '#ffffff',
-    fontSize: 18,
   },
 });

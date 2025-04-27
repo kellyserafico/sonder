@@ -15,8 +15,6 @@ export default function TabLayout() {
 
   return (
     <>
-      {/* <StatusBar style="auto" /> */}
-
       <Tabs
         screenOptions={{
           tabBarActiveTintColor: "#451994", 
@@ -70,6 +68,12 @@ export default function TabLayout() {
             tabBarIcon: ({ color }) => (
               <AntDesign name="user" size={24} color={color} />
             ),
+          }}
+        />
+        <Tabs.Screen
+          name="viewprofile"
+          options={{
+            href: null, 
           }}
         />
       </Tabs>
