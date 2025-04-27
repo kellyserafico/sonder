@@ -1,22 +1,10 @@
-<<<<<<< HEAD
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
-import { useState, useEffect } from "react";
-import { useRouter } from "expo-router";
-import { Ionicons } from "@expo/vector-icons";
-=======
+
 import { View, Text, StyleSheet, TouchableOpacity, TextInput } from 'react-native';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Alert, Platform, ToastAndroid } from 'react-native';
->>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
 
 interface Prompt {
   id: number;
@@ -53,11 +41,6 @@ export default function AnswerPrompt() {
   }, []);
 
   const handleSubmit = () => {
-<<<<<<< HEAD
-    console.log("Submitted response:", response);
-    // You can add code to post this to your database
-    router.back(); // go back to previous page after submit
-=======
     if (response.trim() === '') return;
   
     if (Platform.OS === 'android') {
@@ -67,7 +50,6 @@ export default function AnswerPrompt() {
     }
   
     router.replace('/');
->>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
   };
   
 
@@ -121,10 +103,7 @@ export default function AnswerPrompt() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-<<<<<<< HEAD
     backgroundColor: "#000000",
-=======
->>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
     padding: 24,
     paddingTop: 48,
   },
@@ -145,10 +124,7 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
   },
-<<<<<<< HEAD
 
-=======
->>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
   dateText: {
     fontFamily: "JosefinSans-Regular",
     fontSize: 18,
@@ -170,15 +146,9 @@ const styles = StyleSheet.create({
     padding: 16,
     fontFamily: "JosefinSans-Regular",
     fontSize: 16,
-<<<<<<< HEAD
     color: "#ffffff",
-    height: 200,
-    textAlignVertical: "top", // ensure text starts at top
-=======
-    color: '#ffffff',
-    height: 300,
-    textAlignVertical: 'top',
->>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
+    height: 200, // Use the desired height
+    textAlignVertical: "top", // Ensure text starts at the top
     marginBottom: 24,
   },
   submitButton: {
@@ -186,16 +156,10 @@ const styles = StyleSheet.create({
     borderColor: "#ffffff",
     borderRadius: 25,
     paddingVertical: 12,
-<<<<<<< HEAD
     alignItems: "center",
     width: "70%",
     alignSelf: "center",
-=======
-    alignItems: 'center',
-    width: '70%',
-    alignSelf: 'center',
     marginBottom: 24,
->>>>>>> 0ee4eb9ced5eb85de9af29c6a7a840c0947058e6
   },
   submitButtonText: {
     color: "#ffffff",
@@ -204,3 +168,4 @@ const styles = StyleSheet.create({
     textTransform: "lowercase",
   },
 });
+

@@ -38,7 +38,6 @@ export default function FeedScreen() {
   const [selectedTab, setSelectedTab] = useState("trending");
   const [prompt, setPrompt] = useState<Prompt | null>(null);
   const [responses, setResponses] = useState<Response[]>([]);
-  const navigation = useNavigation();
 
   //get the prompts
   useEffect(() => {
@@ -103,17 +102,12 @@ export default function FeedScreen() {
       <SafeAreaView style={styles.container}>
         {/* Header */}
         <View style={styles.header}>
-  <Text style={styles.title}>sonder</Text>
-
-  <TouchableOpacity style={styles.profileButton}>
-    <Image
-      source={{ uri: "https://via.placeholder.com/80" }}
-      style={styles.profilePic}
-    />
-  </TouchableOpacity>
-</View>
-
-
+          <Text style={styles.title}>sonder</Text>
+          <Image
+            source={{ uri: "https://via.placeholder.com/80" }}
+            style={styles.profilePic}
+          />
+        </View>
 
         {/* Prompt */}
         <TouchableOpacity>
@@ -179,33 +173,24 @@ const styles = StyleSheet.create({
     backgroundColor: "#000000",
   },
   header: {
-    position: 'relative',
-    alignItems: 'center',   // center title horizontally
-    justifyContent: 'center',
-    paddingTop: 8,
-    paddingBottom: 8,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 16,
+    marginTop: 8,
   },
   title: {
-    fontFamily: 'JosefinSans-Bold',
+    fontFamily: "JosefinSans-Bold",
     fontSize: 32,
-    color: '#ffffff',
-    fontWeight: '700',
-    textAlign: 'center',
-  },
-  profileButton: {
-    position: 'absolute',
-    right: 16,         // 16px from right edge
-    top: '50%',
-    transform: [{ translateY: -20 }],  // center vertically (since image is 40x40)
+    color: "#ffffff",
+    fontWeight: "700",
   },
   profilePic: {
     width: 40,
     height: 40,
     borderRadius: 20,
-    backgroundColor: '#ccc',
+    backgroundColor: "#ccc",
   },
-  
-  
   prompt: {
     textAlign: "center",
     color: "#ffffff",
