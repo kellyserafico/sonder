@@ -5,6 +5,7 @@ from typing import List
 from .. import models
 from .. import schema as schemas 
 from ..database import get_db
+from ..utils.prompt_generator import generate_prompt
 
 router = APIRouter(
     prefix="/prompt",
@@ -16,7 +17,7 @@ router = APIRouter(
 def create_prompt(prompt: schemas.PromptCreate, db: Session = Depends(get_db)):
 
     db_prompt = models.Prompt(
-        content=prompt.content,
+        content=generate_prompt(),
         scheduled_for=prompt.scheduled_for,
         is_active=prompt.is_active
 

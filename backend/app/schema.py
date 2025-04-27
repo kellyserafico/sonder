@@ -21,7 +21,7 @@ class UserResponse(UserBase):
 
 # Prompt schemas
 class PromptBase(BaseModel):
-    content: str
+    content: Optional[str] = None
     scheduled_for: Optional[datetime] = None
     is_active: bool = False
 
