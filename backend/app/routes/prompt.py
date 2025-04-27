@@ -35,6 +35,20 @@ def read_prompts(skip: int = 0, limit: int = 100, db: Session = Depends(get_db))
     prompts = db.query(models.Prompt).offset(skip).limit(limit).all()
     return prompts
 
+#gets the current prompt
+@router.get("/current", response_model=List[schemas.PromptResponse])
+def read_current_prompts(skip: int = 0, limit: int = 1, db: Session = Depends(get_db)):
+    prompts = (
+    db.query(models.Prompt)
+    .filter(models.Prompt.is_active == True)
+    .order_by(models.Prompt.id.desc())
+    .offset(skip)
+    .limit(limit)
+    .all()
+)
+
+    return prompts
+
 # Turn prompt activity on
 @router.put("/on/{prompt_id}", response_model=schemas.PromptResponse)
 def update_prompt_on(prompt_id: int, db: Session = Depends(get_db)):

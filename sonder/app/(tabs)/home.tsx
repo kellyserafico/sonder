@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableOpacity, FlatList } from 'react-native';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Ionicons } from '@expo/vector-icons';
 import Post from "../../components/feed/Post"
 
@@ -12,8 +12,32 @@ const posts = [
   { id: '4', username: 'sjdklf', text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.' },
 ];
 
+
+
+
+
 export default function FeedScreen() {
   const [selectedTab, setSelectedTab] = useState('trending');
+  const [prompt, setPrompt] = useState('trending');
+
+
+  //get the prompts
+  useEffect(()=>{
+    async function getCurrentPrompt() {
+      try {
+        const res = await fetch('http://localhost:8000/prompt/current');
+        const data = await res.json();
+        setPrompt(data[0].content);
+        console.log("DATA",data);
+      } catch (error) {
+        console.error('Failed to fetch prompts:', error);
+      }
+
+    }
+
+    getCurrentPrompt();
+
+  },[])
 
   return (
     <SafeAreaProvider>
@@ -29,7 +53,7 @@ export default function FeedScreen() {
 
         {/* Prompt */}
         <TouchableOpacity>
-          <Text style={styles.prompt}>how are you?</Text>
+          <Text style={styles.prompt}>{prompt}</Text>
         </TouchableOpacity>
 
         {/* Tabs */}
